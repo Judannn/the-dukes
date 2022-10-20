@@ -1,14 +1,15 @@
-from mimetypes import init
-from msilib.schema import Class
-
-
 from base_classes.coordinates import Coordinates
+from base_classes.object_types import ObjectTypes
 
 class NPC:
-    def __init__(self, name, items, coordinates) -> None:
+    def __init__(self, name, coordinates) -> None:
         self.name = name
-        self.items = []
+        self.graphic_char = ObjectTypes.NPC
+        self.item_bag = []
         self.coordinates = coordinates
         
-        for item in items: # Add items into NPC inventory
-            self.items.append(item)
+    def add_item(self, item):
+        self.item_bag.append(item)
+
+    def __str__(self):
+        return self.graphic_char.value
