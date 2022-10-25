@@ -39,16 +39,27 @@ class Game:
                 self.current_room.remove_object(object)
                 self.player_actions.append(f"You picked up a {object.name}!")
             elif isinstance(object, NPC):
-                self.player_chat.append(self.player.talk(object))
+                reply = object.talk()
+                self.player_chat.append(reply.reply)
+                self.player_options = reply.reply_options
             elif isinstance(object, Door):
                 self.enter_door(object)
         else:
             self.player.move(player_input, self.current_room)
     
     def enter_door(self, door):
-        door.linked_room.add_object(self.player)
-        self.current_room.remove_object(self.player)
-        self.current_room = door.linked_room
+        if door.linked_door == None:
+            self.player_actions.append("This door won't open...")
+        else:
+            # Move player to joining door coords
+            self.player.coordinates.xcord = door.linked_door.coordinates.xcord
+            self.player.coordinates.ycord = door.linked_door.coordinates.ycord
+            # Add player to linked room
+            door.linked_room.add_object(self.player)
+            # Remove player from current room
+            self.current_room.remove_object(self.player)
+            # Update linked room to current room
+            self.current_room = door.linked_room
     
     def setup(self):
         # create Player
@@ -65,15 +76,26 @@ class Game:
         testroom = Room("Kitchen",4,4)
         testroom2 = Room("lounge",6,4)
 
+        # create doors
+        door1 = Door(Coordinates(0,2), testroom2)
+        door2 = Door(Coordinates(5,3), testroom)
+
+        # link doors
+        door1.link_door(door2)
+        door2.link_door(door1)
+
         # add objects to kitchen
         testroom.add_object(Item("sword",Coordinates(2,3)))
         testroom.add_object(Item("feather",Coordinates(1,1)))
-        testroom.add_object(Door(Coordinates(0,2), testroom2))
+        
+        door1.link_door(door2)
+        testroom.add_object(door1)
+        
         testroom.add_object(npc1)
         testroom.add_object(player1)
 
         #add objects to lounge
-        testroom2.add_object(Door(Coordinates(0,2),testroom))
+        testroom2.add_object(door2)
 
         self.current_room = testroom
 
@@ -108,8 +130,20 @@ class Game:
                     string += e.graphic_char.value
             print(string)
     
+
+    # TRYING TO SORT OUT TALKING TO PEOPLE ENDED UP FINISHING HERE !!!!!!!!!!!!
+    def collect_options(self):
+        for object in self.current_room.object_list:
+            if(self.is_same_coord(self.player.coordinates, object.coordinates)):
+                if isinstance(object, Item):
+                    print(f"{option_number}. Pick up {object.name}")
+                if isinstance(object, NPC):
+                    print(f"{option_number}. Talk to {object.name}")
+                if isinstance(object, Door):
+                    print(f"{option_number}. Enter {object.linked_room.name}")
+                self.player_options.append(object)
+
     def print_options(self):
-        self.player_options = []
         option_number = 0
         for object in self.current_room.object_list:
             if(self.is_same_coord(self.player.coordinates, object.coordinates)):
@@ -121,6 +155,7 @@ class Game:
                 if isinstance(object, Door):
                     print(f"{option_number}. Enter {object.linked_room.name}")
                 self.player_options.append(object)
+        self.player_options = []
     
     def print_actions(self):
         for action in self.player_actions:

@@ -40,19 +40,5 @@ class Player:
     def pick_up_item(self, Item):
         self.item_bag.append(Item)
     
-    def talk(self, npc):
-        return npc.talk(self)
-    
     def enter_door(self, door):
         pass
-    
-    def action(self, key_input, room):
-        # Move functions
-        if key_input == "u":
-            self.move_up(room)
-        elif key_input == "d":
-            self.move_down(room)
-        elif key_input == "l":
-            self.move_left(room)
-        elif key_input == "r":
-            self.move_right(room)

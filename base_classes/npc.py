@@ -1,4 +1,5 @@
 from base_classes.coordinates import Coordinates
+from base_classes.npc_reply import NPCReply
 from base_classes.object_types import ObjectTypes
 
 class NPC:
@@ -11,5 +12,18 @@ class NPC:
     def add_item(self, item):
         self.item_bag.append(item)
 
-    def talk(self, player):
-        return f"Hi {player.name} i'm {self.name}"
+    def talk(self, player=None, response=None):
+        reply_details = NPCReply()
+        if response == None:
+            reply_details.reply = "What do you want!?"
+            reply_details.reply_options.append("What happened here?")
+            #reply_details.reply_options.append("Who did it?")
+        elif response == "What happened here?":
+            reply_details.reply = "Someone killed her!"
+            reply_details.reply_options.append("Killed who?")
+        elif response == "Who did it?":
+            reply_details.reply = "Someone killed her!"
+            reply_details.reply_options.append("Killed who?")
+        elif response == "Killed who?":
+            reply_details.reply = "Samantha!"
+        return reply_details
