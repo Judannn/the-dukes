@@ -11,5 +11,5 @@ class NPC:
     def add_item(self, item):
         self.item_bag.append(item)
 
-    def __str__(self):
-        return self.graphic_char.value
+    def talk(self, player):
+        return f"Hi {player.name} i'm {self.name}"

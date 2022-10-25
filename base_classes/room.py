@@ -7,29 +7,13 @@ class Room:
         self.object_list = []
         self.rows = rows
         self.columns = columns
-        self.room = []
-        self.update_room()
-
-    def update_room(self):
-        self.room = [[" " for i in range(self.rows)] for j in range(self.columns)]
-        for object in self.object_list:
-            xcord = object.coordinates.xcord
-            ycord = object.coordinates.ycord
-            self.room[xcord][ycord] = object
-
-    def print_room(self):
-        for i in self.room:
-            string = ""
-            for e in i:
-                if e != " ":
-                    string += str(e)
-                else:
-                    string += e
-            print(string)
-
+        self.room = [[" " for i in range(self.columns)] for j in range(self.rows)]
+            
     def add_object(self, object):
         xcord = object.coordinates.xcord
         ycord = object.coordinates.ycord
         self.room[xcord][ycord] = object
         self.object_list.append(object)
-            
+
+    def remove_object(self, object):
+        self.object_list.remove(object)
