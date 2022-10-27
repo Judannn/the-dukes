@@ -1,3 +1,4 @@
+import os
 from xml.etree.ElementTree import tostring
 from base_classes.coordinates import Coordinates
 from base_classes.door import Door
@@ -7,13 +8,24 @@ from base_classes.room import Room
 from base_classes.item import Item
 from base_classes.object_types import ObjectTypes
 from base_classes.player_option import PlayerOption
-import os
+from items.berries import Berries
+from items.water import Water
+from items.battery import Battery
+from items.dog_hair import DogHair
+from items.potion import Potion
+from items.silver_necklace import SilverNecklace
+
+from npcs.daisy import Daisy
+from npcs.duke import Duke
+from npcs.grandma import Grandma
+from npcs.dog import Dog
+from npcs.luke import Luke
+from npcs.sherrif_rosco import SherrifRoscoe
 
 class Game:
     def __init__(self) -> None:
         self.player = None
         self.continue_game = True
-        self.current_room = None
         self.setup()
         self.run()
     
@@ -24,8 +36,8 @@ class Game:
             self.print_room()
             if self.player.is_talking != True:
                 self.player.action_options = self.collect_action_options()
-            self.print_action_descriptions()
             self.print_npc_replies()
+            self.print_action_descriptions()
             self.print_action_options()
             #player_input = self.player.move(input(""), self.current_room)
             while True:
@@ -48,38 +60,118 @@ class Game:
         player1 = Player("Jourdan",Coordinates(3,3))
         self.player = player1
 
-        # create npc
-        npc1 = NPC("John",Coordinates(3,2))
+        # create npc's
+        daisy = Daisy("Daisy",Coordinates(3,2))
+        duke = Duke("Duke",Coordinates(3,2))
+        grandma = Grandma("Grandma",Coordinates(3,2))
+        dog = Dog("Dog",Coordinates(3,2))
+        luke = Luke("Luke",Coordinates(3,2))
+        sherrif_roscoe = SherrifRoscoe("Sherrif Roscoe",Coordinates(3,2))
 
         # add items to player
-        npc1.add_item(Item("potion"))
+        duke.add_item(Potion)
+        dog.add_item(DogHair)
 
         # create rooms
-        testroom = Room("Kitchen",4,4)
-        testroom2 = Room("lounge",6,4)
+        kitchen = Room("Kitchen",4,4)
+        study = Room("Study",6,4)
+        bedroom1 = Room("Bedroom",4,5)
+        bathroom = Room("Bathroom",4,3)
+        dining_room = Room("Dining Room",4,6)
+        hallway = Room("Hallway",3,10)
+        bedroom2 = Room("Bedroom 2",4,5)
+        bedroom3 = Room("Bedroom 3",4,5)
+        garden = Room("Garden",4,7)
+        shed = Room("Shed",4,4)
 
         # create doors
-        door1 = Door(Coordinates(0,2), testroom2)
-        door2 = Door(Coordinates(5,3), testroom)
+        kitchen_door = Door(Coordinates(3,2), dining_room)
+        dining_room_door1 = Door(Coordinates(0,2), kitchen)
+        dining_room_door2 = Door(Coordinates(1,5), hallway)
+        hallway_door1 = Door(Coordinates(0,1), dining_room)
+        hallway_door2 = Door(Coordinates(0,0), study)
+        study_door = Door(Coordinates(2,3), hallway)
+        hallway_door3 = Door(Coordinates(0,4), bedroom1)
+        bedroom1_door = Door(Coordinates(3,2), hallway)
+        hallway_door4 = Door(Coordinates(0,8), bathroom)
+        bathroom_door = Door(Coordinates(3,1), hallway)
+        hallway_door5 = Door(Coordinates(2,2), bedroom2)
+        bedroom2_door = Door(Coordinates(0,2), hallway)
+        hallway_door6 = Door(Coordinates(2,7), bedroom3)
+        bedroom3_door = Door(Coordinates(0,2), hallway)
+        hallway_door7 = Door(Coordinates(1,9), garden)
+        garden_door1 = Door(Coordinates(1,0), hallway)
+        garden_door2 = Door(Coordinates(1,6), shed)
+        shed_door = Door(Coordinates(1,0), garden)
+
 
         # link doors
-        door1.link_door(door2)
-        door2.link_door(door1)
+        kitchen_door.link_door(dining_room_door1)
+        dining_room_door1.link_door(kitchen_door)
+        dining_room_door2.link_door(hallway_door1)
+        hallway_door1.link_door(dining_room_door2)
+        hallway_door2.link_door(study_door)
+        study_door.link_door(hallway_door2)
+        hallway_door3.link_door(bedroom1_door)
+        bedroom1_door.link_door(hallway_door3)
+        hallway_door4.link_door(bathroom_door)
+        bathroom_door.link_door(hallway_door4)
+        hallway_door5.link_door(bedroom2_door)
+        bedroom2_door.link_door(hallway_door5)
+        hallway_door6.link_door(bedroom3_door)
+        bedroom3_door.link_door(hallway_door6)
+        hallway_door7.link_door(garden_door1)
+        garden_door1.link_door(hallway_door7)
+        garden_door2.link_door(shed_door)
+        shed_door.link_door(garden_door2)
 
-        # add objects to kitchen
-        testroom.add_object(Item("sword",Coordinates(2,3)))
-        testroom.add_object(Item("feather",Coordinates(1,1)))
-        
-        door1.link_door(door2)
-        testroom.add_object(door1)
-        
-        testroom.add_object(npc1)
-        testroom.add_object(player1)
+        # kitchen add objects
+        kitchen.add_object(Water(Coordinates(0,0)))
+        kitchen.add_object(kitchen_door)
+        kitchen.add_object(grandma)
 
-        #add objects to lounge
-        testroom2.add_object(door2)
+        # dining room add objects
+        dining_room.add_object(sherrif_roscoe)
+        dining_room.add_object(dining_room_door1)
+        dining_room.add_object(dining_room_door2)
+        dining_room.add_object(player1)
 
-        self.current_room = testroom
+        # hallway add objects
+        hallway.add_object(hallway_door1)
+        hallway.add_object(hallway_door2)
+        hallway.add_object(hallway_door3)
+        hallway.add_object(hallway_door4)
+        hallway.add_object(hallway_door5)
+        hallway.add_object(hallway_door6)
+        hallway.add_object(hallway_door7)
+
+        # bedroom1 add objects
+        bedroom1.add_object(bedroom1_door)
+        bedroom1.add_object(daisy)
+        bedroom1.add_object(SilverNecklace(Coordinates(0,0)))
+
+        # bathroom add objects
+        bathroom.add_object(bathroom_door)
+        bathroom.add_object(luke)
+
+        # bedroom2 add objects
+        bedroom2.add_object(bedroom2_door)
+        bedroom2.add_object(Battery(Coordinates(0,3)))
+
+        # bedroom3 add objects
+        bedroom3.add_object(bedroom3_door)
+
+        # garden add objects
+        garden.add_object(garden_door1)
+        garden.add_object(garden_door2)
+        garden.add_object(dog)
+        garden.add_object(Berries(Coordinates(0,3)))
+
+        # shed add objects
+        garden.add_object(shed_door)
+        garden.add_object(duke)
+
+        self.current_room = dining_room
 
     def collect_action_options(self):
         options = []
@@ -94,14 +186,14 @@ class Game:
         return options
 
     def is_same_coord(self, first_coordinate, second_coordinate):
-        if first_coordinate.xcord == second_coordinate.xcord:
-                if first_coordinate.ycord == second_coordinate.ycord:
+        if first_coordinate.row == second_coordinate.row:
+                if first_coordinate.column == second_coordinate.column:
                     return True
         return False
 
     def print_room(self):
         print(f"Current Room: {self.current_room.name}")
-        for i in self.current_room.room:
+        for i in self.player.current_room.room:
             string = ""
             for e in i:
                 if(isinstance(e, str)):
@@ -125,83 +217,3 @@ class Game:
         for chat in self.player.npc_replies:
             print(chat)
         self.player.npc_replies = []
-
-    # def collect_action_options(self):
-    #     self.player_options = []
-    #     for object in self.current_room.object_list:
-    #         if(self.is_same_coord(self.player.coordinates, object.coordinates)):
-    #             if isinstance(object, Item):
-    #                 self.add_player_option(f"Pick up {object.name}", object)
-    #             if isinstance(object, NPC):
-    #                 self.add_player_option(f"Talk to {object.name}", object)
-    #             if isinstance(object, Door):
-    #                 self.add_player_option(f"Enter {object.linked_room.name}", object)
-
-    # def player_action(self, player_input):
-    #     if player_input.isnumeric():
-    #         object = self.player_options[int(player_input) - 1].object
-    #         if isinstance(object, Item):
-    #             self.player.pick_up_item(object)
-    #             self.current_room.remove_object(object)
-    #             self.player_actions.append(f"You picked up a {object.name}!")
-    #         elif isinstance(object, NPC):
-    #             response = self.player_options[int(player_input)].text
-    #             npc_reply = self.player.talk(object, response)
-    #             self.player_chat.append(npc_reply.reply)
-    #             if npc_reply.item != None:
-    #                 self.player_actions.append(npc_reply.action)
-    #                 self.player.pick_up_item(npc_reply.item)
-    #             if npc_reply.reply_options:
-    #                 self.player_options = []
-    #                 self.add_player_options(npc_reply.reply_options)
-    #             else:
-    #                 self.player.talking = False
-    #         elif isinstance(object, Door):
-    #             self.enter_door(object)
-    #     else:
-    #         self.player.move(player_input, self.current_room)
-    
-    # def enter_door(self, door):
-    #     if door.linked_door == None:
-    #         self.player_actions.append("This door won't open...")
-    #     else:
-    #         # Move player to joining door coords
-    #         self.player.coordinates.xcord = door.linked_door.coordinates.xcord
-    #         self.player.coordinates.ycord = door.linked_door.coordinates.ycord
-    #         # Add player to linked room
-    #         door.linked_room.add_object(self.player)
-    #         # Remove player from current room
-    #         self.current_room.remove_object(self.player)
-    #         # Update linked room to current room
-    #         self.current_room = door.linked_room
-
-    # def update_room(self):
-    #     self.room_border()
-    #     for object in self.current_room.object_list:
-    #         xcord = object.coordinates.xcord + 1
-    #         ycord = object.coordinates.ycord + 1
-    #         self.current_room.room[xcord][ycord] = object
-    
-    # def room_border(self):
-    #     rows = self.current_room.rows + 2
-    #     columns = self.current_room.columns + 2
-    #     self.current_room.room = [[" " for i in range(columns)] for j in range(rows)]
-    #     #Add border Rows
-    #     for xcord in range(rows):
-    #         #Add border Columns
-    #         for ycord in range(columns):
-    #             if xcord == 0 or xcord == rows - 1:
-    #                 self.current_room.room[xcord][ycord] = "─"
-    #             if ycord == 0 or ycord == columns - 1:
-    #                 self.current_room.room[xcord][ycord] = "│"
-        
-    # def print_room(self):
-    #     print(f"Current Room: {self.current_room.name}")
-    #     for i in self.current_room.room:
-    #         string = ""
-    #         for e in i:
-    #             if(isinstance(e, str)):
-    #                 string += e
-    #             else:
-    #                 string += e.graphic_char.value
-    #         print(string)

@@ -10,9 +10,9 @@ class Room:
         self.room = [[" " for i in range(self.columns)] for j in range(self.rows)]
             
     def add_object(self, object):
-        xcord = object.coordinates.xcord
-        ycord = object.coordinates.ycord
-        self.room[xcord][ycord] = object
+        row = object.coordinates.row
+        column = object.coordinates.column
+        self.room[row][column] = object
         self.object_list.append(object)
         # If a player add the current room to the player
         if isinstance(object, Player):
@@ -24,19 +24,19 @@ class Room:
     def update_room(self):
         self.room_border()
         for object in self.object_list:
-            xcord = object.coordinates.xcord + 1
-            ycord = object.coordinates.ycord + 1
-            self.room[xcord][ycord] = object
+            row = object.coordinates.row + 1
+            column = object.coordinates.column + 1
+            self.room[row][column] = object
     
     def room_border(self):
         rows = self.rows + 2
         columns = self.columns + 2
         self.room = [[" " for i in range(columns)] for j in range(rows)]
         #Add border Rows
-        for xcord in range(rows):
+        for row in range(rows):
             #Add border Columns
-            for ycord in range(columns):
-                if xcord == 0 or xcord == rows - 1:
-                    self.room[xcord][ycord] = "─"
-                if ycord == 0 or ycord == columns - 1:
-                    self.room[xcord][ycord] = "│"
+            for column in range(columns):
+                if row == 0 or row == rows - 1:
+                    self.room[row][column] = "─"
+                if column == 0 or column == columns - 1:
+                    self.room[row][column] = "│"
