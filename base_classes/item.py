@@ -1,6 +1,4 @@
-from base_classes.player import Player
 from base_classes.object_types import ObjectTypes
-from base_classes.coordinates import Coordinates
 
 class Item:
     def __init__(self, name, coordinates = []) -> None:

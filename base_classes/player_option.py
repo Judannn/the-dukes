@@ -1,4 +1,4 @@
 class PlayerOption:
-    def __init__(self) -> None:
-        self.id = 0
-        self.text = ""
+    def __init__(self, text, object) -> None:
+        self.text = text
+        self.object = object
