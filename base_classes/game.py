@@ -32,7 +32,6 @@ class Game:
     def run(self):
         while self.continue_game:
             os.system('clear')
-            self.current_room.update_room()
             self.print_room()
             if self.player.is_talking != True:
                 self.player.action_options = self.collect_action_options()
@@ -61,12 +60,12 @@ class Game:
         self.player = player1
 
         # create npc's
-        daisy = Daisy("Daisy",Coordinates(3,2))
-        duke = Duke("Duke",Coordinates(3,2))
-        grandma = Grandma("Grandma",Coordinates(3,2))
-        dog = Dog("Dog",Coordinates(3,2))
-        luke = Luke("Luke",Coordinates(3,2))
-        sherrif_roscoe = SherrifRoscoe("Sherrif Roscoe",Coordinates(3,2))
+        daisy = Daisy("Daisy",Coordinates(1,2))
+        duke = Duke("Duke",Coordinates(2,1))
+        grandma = Grandma("Grandma",Coordinates(1,2))
+        dog = Dog("Dog",Coordinates(2,4))
+        luke = Luke("Luke",Coordinates(2,1))
+        sherrif_roscoe = SherrifRoscoe("Sherrif Roscoe",Coordinates(1,2))
 
         # add items to player
         duke.add_item(Potion)
@@ -74,7 +73,7 @@ class Game:
 
         # create rooms
         kitchen = Room("Kitchen",4,4)
-        study = Room("Study",6,4)
+        study = Room("Study",4,4)
         bedroom1 = Room("Bedroom",4,5)
         bathroom = Room("Bathroom",4,3)
         dining_room = Room("Dining Room",4,6)
@@ -88,9 +87,9 @@ class Game:
         kitchen_door = Door(Coordinates(3,2), dining_room)
         dining_room_door1 = Door(Coordinates(0,2), kitchen)
         dining_room_door2 = Door(Coordinates(1,5), hallway)
-        hallway_door1 = Door(Coordinates(0,1), dining_room)
+        hallway_door1 = Door(Coordinates(1,0), dining_room)
         hallway_door2 = Door(Coordinates(0,0), study)
-        study_door = Door(Coordinates(2,3), hallway)
+        study_door = Door(Coordinates(3,2), hallway)
         hallway_door3 = Door(Coordinates(0,4), bedroom1)
         bedroom1_door = Door(Coordinates(3,2), hallway)
         hallway_door4 = Door(Coordinates(0,8), bathroom)
@@ -126,7 +125,7 @@ class Game:
         shed_door.link_door(garden_door2)
 
         # kitchen add objects
-        kitchen.add_object(Water(Coordinates(0,0)))
+        kitchen.add_object(Water(coordinates=Coordinates(0,0)))
         kitchen.add_object(kitchen_door)
         kitchen.add_object(grandma)
 
@@ -145,10 +144,13 @@ class Game:
         hallway.add_object(hallway_door6)
         hallway.add_object(hallway_door7)
 
+        # study add objects
+        study.add_object(study_door)
+
         # bedroom1 add objects
         bedroom1.add_object(bedroom1_door)
         bedroom1.add_object(daisy)
-        bedroom1.add_object(SilverNecklace(Coordinates(0,0)))
+        bedroom1.add_object(SilverNecklace(coordinates=Coordinates(0,0)))
 
         # bathroom add objects
         bathroom.add_object(bathroom_door)
@@ -156,7 +158,7 @@ class Game:
 
         # bedroom2 add objects
         bedroom2.add_object(bedroom2_door)
-        bedroom2.add_object(Battery(Coordinates(0,3)))
+        bedroom2.add_object(Battery(coordinates=Coordinates(0,3)))
 
         # bedroom3 add objects
         bedroom3.add_object(bedroom3_door)
@@ -165,17 +167,15 @@ class Game:
         garden.add_object(garden_door1)
         garden.add_object(garden_door2)
         garden.add_object(dog)
-        garden.add_object(Berries(Coordinates(0,3)))
+        garden.add_object(Berries(coordinates=Coordinates(0,3)))
 
         # shed add objects
-        garden.add_object(shed_door)
-        garden.add_object(duke)
-
-        self.current_room = dining_room
+        shed.add_object(shed_door)
+        shed.add_object(duke)
 
     def collect_action_options(self):
         options = []
-        for object in self.current_room.object_list:
+        for object in self.player.current_room.object_list:
             if(self.is_same_coord(self.player.coordinates, object.coordinates)):
                 if isinstance(object, Item):
                     options.append(PlayerOption(f"Pick up {object.name}", object))
@@ -192,7 +192,8 @@ class Game:
         return False
 
     def print_room(self):
-        print(f"Current Room: {self.current_room.name}")
+        self.player.current_room.update_room()
+        print(f"Current Room: {self.player.current_room.name}")
         for i in self.player.current_room.room:
             string = ""
             for e in i:

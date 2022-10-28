@@ -14,4 +14,4 @@ class NPC:
         self.item_bag.append(item)
 
     def talk(self, response):
-        pass
+        return NPCReply()

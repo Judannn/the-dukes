@@ -1,4 +1,5 @@
 from nis import match
+from this import d
 from base_classes.door import Door
 from base_classes.item import Item
 from base_classes.npc import NPC
@@ -18,7 +19,7 @@ class Player:
     
     def player_action(self, player_input):
         if player_input.isnumeric():
-            object = self.action_options[int(player_input) - 1].object
+            object = self.action_options[int(player_input)].object
             if isinstance(object, Item):
                 self.pick_up_item(object)
                 self.current_room.remove_object(object)
@@ -88,12 +89,10 @@ class Player:
         if door.linked_door == None:
             self.add_action_description("This door won't open...")
         else:
+            # Remove player from current room
+            self.current_room.remove_object(self)
             # Move player to joining door coords
             self.coordinates.row = door.linked_door.coordinates.row
             self.coordinates.column = door.linked_door.coordinates.column
             # Add player to linked room
             door.linked_room.add_object(self)
-            # Remove player from current room
-            self.current_room.remove_object(self)
-            # Update linked room to current room
-            self.current_room = door.linked_room
