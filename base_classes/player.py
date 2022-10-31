@@ -1,9 +1,11 @@
 from nis import match
 from this import d
 from base_classes.door import Door
+from base_classes.invertory_menu import InventoryMenu
 from base_classes.item import Item
 from base_classes.npc import NPC
 from base_classes.object_types import ObjectTypes
+from npcs.dog import Dog
 
 class Player:
     def __init__(self, name, coordinates) -> None:
@@ -16,6 +18,10 @@ class Player:
         self.action_options = []
         self.action_descriptions = []
         self.npc_replies = []
+        self.accepted_duke_quest = False
+        self.drank_concoction = False
+        self.spoke_to_dog = False
+        self.spoke_to_luke = False
     
     def player_action(self, player_input):
         if player_input.isnumeric():
@@ -39,7 +45,11 @@ class Player:
             elif isinstance(object, Door):
                 self.enter_door(object)
         else:
-            self.move(player_input, self.current_room)
+            if player_input == "i":
+                # open inventory menu
+                InventoryMenu(self)
+            else:
+                self.move(player_input, self.current_room)
     
     def move(self, key_input, room):
         self.is_talking = False
@@ -73,7 +83,7 @@ class Player:
     
     def talk(self, npc, response=None):
         self.is_talking = True
-        return npc.talk(response)
+        return npc.talk(response,self)
     
     def add_action_options(self, options):
         for option in options:
@@ -96,3 +106,6 @@ class Player:
             self.coordinates.column = door.linked_door.coordinates.column
             # Add player to linked room
             door.linked_room.add_object(self)
+    
+    def drink_concotion(self):
+        self.drank_concoction = True

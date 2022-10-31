@@ -5,3 +5,4 @@ class Item:
         self.name = name
         self.graphic_char = ObjectTypes.ITEM
         self.coordinates = coordinates
+        self.description = ""

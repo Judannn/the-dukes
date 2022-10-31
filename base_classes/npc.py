@@ -1,7 +1,7 @@
 from base_classes.item import Item
 from base_classes.npc_reply import NPCReply
 from base_classes.object_types import ObjectTypes
-from base_classes.player_option import PlayerOption
+from base_classes.menu_option import MenuOption
 
 class NPC:
     def __init__(self, name, coordinates) -> None:
@@ -13,5 +13,5 @@ class NPC:
     def add_item(self, item):
         self.item_bag.append(item)
 
-    def talk(self, response):
+    def talk(self, response, player):
         return NPCReply()

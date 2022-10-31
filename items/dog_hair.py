@@ -5,3 +5,4 @@ class DogHair(Item):
         super().__init__(name, coordinates)
         self.name = "Dog Hair"
         self.coordinates = coordinates
+        self.description = "A tuff of dog hair."

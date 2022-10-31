@@ -5,3 +5,4 @@ class SilverNecklace(Item):
         super().__init__(name, coordinates)
         self.name = "Silver Necklace"
         self.coordinates = coordinates
+        self.description = "A silver necklace."

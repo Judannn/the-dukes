@@ -1,3 +1,5 @@
+import inspect
+from locale import LC_MESSAGES
 import os
 from xml.etree.ElementTree import tostring
 from base_classes.coordinates import Coordinates
@@ -7,7 +9,7 @@ from base_classes.player import Player
 from base_classes.room import Room
 from base_classes.item import Item
 from base_classes.object_types import ObjectTypes
-from base_classes.player_option import PlayerOption
+from base_classes.menu_option import MenuOption
 from items.berries import Berries
 from items.water import Water
 from items.battery import Battery
@@ -40,8 +42,10 @@ class Game:
             self.print_action_options()
             #player_input = self.player.move(input(""), self.current_room)
             while True:
-                player_input = input()
-                if player_input == "u" or player_input == "d" or player_input == "l" or player_input == "r" or self.player.action_options and int(player_input) <= len(self.player.action_options)-1:
+                player_input = input().lower()
+                if player_input == "u" or player_input == "d" or player_input == "l" or player_input == "r" or player_input == "i":
+                    break
+                elif self.player.action_options and int(player_input) <= len(self.player.action_options)-1:
                     break
                 else:
                     self.print_console()
@@ -57,6 +61,12 @@ class Game:
     def setup(self):
         # create Player
         player1 = Player("Jourdan",Coordinates(3,3))
+        player1.pick_up_item(Potion("Concoction"))
+        player1.pick_up_item(SilverNecklace("Silver Necklace"))
+        player1.spoke_to_dog = True
+        player1.spoke_to_luke = True
+
+
         self.player = player1
 
         # create npc's
@@ -176,14 +186,30 @@ class Game:
     def collect_action_options(self):
         options = []
         for object in self.player.current_room.object_list:
-            if(self.is_same_coord(self.player.coordinates, object.coordinates)):
+            if self.is_same_coord(self.player.coordinates, object.coordinates) and not isinstance(object, Player):
+                self.collect_object_options(object)
                 if isinstance(object, Item):
-                    options.append(PlayerOption(f"Pick up {object.name}", object))
+                    options.append(MenuOption(f"Pick up {object.name}", object))
                 if isinstance(object, NPC):
-                    options.append(PlayerOption(f"Talk to {object.name}", object))
+                    options.append(MenuOption(f"Talk to {object.name}", object))
+                    if isinstance(object, Dog) and object.has_hair and self.player.accepted_duke_quest:
+                        options.append(MenuOption(f"Take Dog hair", object))
+                    elif self.player.spoke_to_luke and self.has_silver_necklace:
+                        options.append(MenuOption(f"Press silver necklace against {object.name}", object))
                 if isinstance(object, Door):
-                    options.append(PlayerOption(f"Enter {object.linked_room.name}", object))
+                    options.append(MenuOption(f"Enter {object.linked_room.name}", object))
         return options
+
+    def has_silver_necklace(self):
+        for item in self.player.item_bag:
+            if isinstance(item, SilverNecklace):
+                return True
+        return False
+
+    def collect_object_options(self, object):
+        method_list = [func for func in dir(object) if callable(getattr(object, func)) and not func.startswith("__")]
+        lsit = inspect.getmembers(object, predicate=inspect.ismethod)
+        test = None
 
     def is_same_coord(self, first_coordinate, second_coordinate):
         if first_coordinate.row == second_coordinate.row:

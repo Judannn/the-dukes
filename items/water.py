@@ -6,4 +6,5 @@ class Water(Item):
         super().__init__(name, coordinates)
         self.name = "Water"
         self.coordinates = coordinates
+        self.description = "Some old fashion water."
 

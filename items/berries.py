@@ -5,3 +5,4 @@ class Berries(Item):
         super().__init__(name, coordinates)
         self.name = "Berries"
         self.coordinates = coordinates
+        self.description = "Some nice juicy berries."
