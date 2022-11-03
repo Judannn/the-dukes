@@ -1,11 +1,14 @@
 import inspect
 from locale import LC_MESSAGES
 import os
+import time
 from xml.etree.ElementTree import tostring
 from base_classes.coordinates import Coordinates
 from base_classes.door import Door
+from base_classes.invertory_menu import InventoryMenu
 from base_classes.npc import NPC
 from base_classes.player import Player
+from base_classes.player_map import PlayerMap
 from base_classes.room import Room
 from base_classes.item import Item
 from base_classes.object_types import ObjectTypes
@@ -28,8 +31,49 @@ class Game:
     def __init__(self) -> None:
         self.player = None
         self.continue_game = True
-        self.setup()
+        self.new_game()
+    
+    def new_game(self):
+        self.player = None
+        self.continue_game = True
+        player_name = self.game_intro()
+        self.setup(player_name)
         self.run()
+    
+    def game_intro(self):
+        os.system('clear')
+        heading1 = """
+▄▄▄█████▓ ██░ ██ ▓█████    ▓█████▄  █    ██  ██ ▄█▀▓█████   ██████ 
+▓  ██▒ ▓▒▓██░ ██▒▓█   ▀    ▒██▀ ██▌ ██  ▓██▒ ██▄█▒ ▓█   ▀ ▒██    ▒ 
+▒ ▓██░ ▒░▒██▀▀██░▒███      ░██   █▌▓██  ▒██░▓███▄░ ▒███   ░ ▓██▄   
+░ ▓██▓ ░ ░▓█ ░██ ▒▓█  ▄    ░▓█▄   ▌▓▓█  ░██░▓██ █▄ ▒▓█  ▄   ▒   ██▒
+▒██▒ ░ ░▓█▒░██▓░▒████▒   ░▒████▓ ▒▒█████▓ ▒██▒ █▄░▒████▒▒██████▒▒
+▒ ░░    ▒ ░░▒░▒░░ ▒░ ░    ▒▒▓  ▒ ░▒▓▒ ▒ ▒ ▒ ▒▒ ▓▒░░ ▒░ ░▒ ▒▓▒ ▒ ░
+    ░     ▒ ░▒░ ░ ░ ░  ░    ░ ▒  ▒ ░░▒░ ░ ░ ░ ░▒ ▒░ ░ ░  ░░ ░▒  ░ ░
+░       ░  ░░ ░   ░       ░ ░  ░  ░░░ ░ ░ ░ ░░ ░    ░   ░  ░  ░  
+        ░  ░  ░   ░  ░      ░       ░     ░  ░      ░  ░      ░  
+                            ░                                      
+"""
+        print(heading1)
+        print("                    A Muder Mystery Game                         ")
+        print()
+        player_name = input("Please enter your player name:\n")
+        os.system('clear')
+        welcome = f"Welcome {player_name}\nThere seems to have been a murder in the Dukes house\nSee if you can find out who it was...\nFor help with controls press 'h'\nGood Luck!"
+        string = ""
+        for chr in welcome:
+            os.system('clear')
+            print(heading1)
+            print("                    A Muder Mystery Game                         ")
+            print(string)
+            string += chr
+            time.sleep(0.05)
+        
+        print()
+        time.sleep(3)
+        
+        return player_name
+    
     
     def run(self):
         while self.continue_game:
@@ -40,16 +84,21 @@ class Game:
             self.print_npc_replies()
             self.print_action_descriptions()
             self.print_action_options()
-            #player_input = self.player.move(input(""), self.current_room)
             while True:
                 player_input = input().lower()
-                if player_input == "u" or player_input == "d" or player_input == "l" or player_input == "r" or player_input == "i":
+                if player_input.isnumeric():
+                    if self.player.action_options and int(player_input) <= len(self.player.action_options)-1:
+                        break
+                elif player_input == "w" or player_input == "a" or player_input == "s" or player_input == "d" or player_input == "i" or player_input == "m" or player_input == "h":
                     break
-                elif self.player.action_options and int(player_input) <= len(self.player.action_options)-1:
-                    break
-                else:
-                    self.print_console()
+                self.print_console()
             self.player.player_action(player_input)
+            if self.player.found_murderer:
+                replay_game = self.finish_game()
+                if replay_game:
+                    return True
+                else:
+                    return False
 
     def print_console(self):
         os.system('clear')
@@ -58,13 +107,27 @@ class Game:
         self.print_npc_replies()
         self.print_action_options()
     
-    def setup(self):
+    def finish_game(self):
+        os.system('clear')
+        self.print_room()
+        self.print_action_descriptions()
+        print("")
+        print("")
+        self.continue_game
+    
+    def setup(self, player_name):
         # create Player
-        player1 = Player("Jourdan",Coordinates(3,3))
-        player1.pick_up_item(Potion("Concoction"))
+        player1 = Player(player_name,Coordinates(3,3))
+        player1.player_map.visited_locations.append("Dining Room")
+        # comment out below when not testing
+        # player1.pick_up_item(Potion("Concoction"))
         player1.pick_up_item(SilverNecklace("Silver Necklace"))
-        player1.spoke_to_dog = True
-        player1.spoke_to_luke = True
+        player1.pick_up_item(Berries("Berries"))
+        player1.pick_up_item(Water("Water"))
+        player1.pick_up_item(Battery("Battery"))
+        player1.pick_up_item(DogHair("Dog Hair"))
+        # player1.spoke_to_dog = True
+        # player1.spoke_to_luke = True
 
 
         self.player = player1
@@ -230,17 +293,20 @@ class Game:
             print(string)
     
     def print_action_options(self):
-        option_id = 0
-        for option in self.player.action_options:
-            print(f"{option_id}. {option.text}")
-            option_id += 1
+        if self.player.action_options:
+            option_id = 0
+            for option in self.player.action_options:
+                print(f"{option_id}. {option.text}")
+                option_id += 1
     
     def print_action_descriptions(self):
-        for action in self.player.action_descriptions:
-            print(action)
-        self.player.action_descriptions = []
+        if self.player.action_descriptions:
+            for action in self.player.action_descriptions:
+                print(action)
+            self.player.action_descriptions = []
     
     def print_npc_replies(self):
-        for chat in self.player.npc_replies:
-            print(chat)
-        self.player.npc_replies = []
+        if self.player.npc_replies:
+            for chat in self.player.npc_replies:
+                print(chat)
+            self.player.npc_replies = []

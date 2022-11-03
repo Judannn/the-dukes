@@ -2,6 +2,7 @@ from base_classes.npc import NPC
 from base_classes.npc_reply import NPCReply
 from base_classes.menu_option import MenuOption
 from base_classes.item import Item
+from base_classes.player import Player
 from items.water import Water
 from items.battery import Battery
 from items.berries import Berries
@@ -14,7 +15,7 @@ class Duke(NPC):
         self.quest_accepted = False
         self.quest_complete = False
 
-    def talk(self, response, player):
+    def talk(self, response, player: Player):
         reply_details = NPCReply()
         if response == f"Talk to {self.name}":
             if self.quest_complete == False:
@@ -34,6 +35,9 @@ class Duke(NPC):
                 reply_details.item = Potion("Soupy Concoction")
                 reply_details.action = f"{self.name} gives you a weird soupy concoction."
                 self.quest_complete = True
+                for item in player.item_bag:
+                    if isinstance(item, Berries) or isinstance(item, Water) or isinstance(item, Battery) or isinstance(item, DogHair):
+                        player.item_bag.remove(item)
             else:
                 reply_details.reply = "You don't have all the items yet. You need a battery, some animal hair, berries and some water..."
         elif response == "What are you doing?":

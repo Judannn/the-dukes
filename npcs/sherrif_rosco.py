@@ -20,4 +20,7 @@ class SherrifRoscoe(NPC):
             reply_details.reply = "Samantha!"
         elif response == "Who did it?":
             reply_details.reply = "I don't bloody know, I'm trying to figure it out..."
+        elif response == f"Press silver necklace against {self.name}":
+            reply_details.action = f"You press the silver necklace against {self.name}"
+            reply_details.reply = "Buddy, Pal, you're a bit weird arn't you. Stop bothering me now alright..."
         return reply_details

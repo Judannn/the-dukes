@@ -22,4 +22,7 @@ class Luke(NPC):
             reply_details.reply = "Sorry dude i'm just trying to lighten the mood."
         elif response == "Any idea who killed Lulu?":
             reply_details.reply = "No idea man, it's honestly a bit scary it was right outside my window and I heard nothing!"
+        elif response == f"Press silver necklace against {self.name}":
+            reply_details.action = f"You press the silver necklace against {self.name}"
+            reply_details.reply = "Ok I wasn't being serious when I said we should get some more silver..."
         return reply_details

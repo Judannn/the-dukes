@@ -31,4 +31,7 @@ class Dog(NPC):
             reply_details.reply_options.append(MenuOption("Oh nothing...",self))
         elif response == "Oh nothing...":
             reply_details.reply = "Cool cool cool cool..."
+        elif response == f"Press silver necklace against {self.name}":
+            reply_details.action = f"You press the silver necklace against {self.name}"
+            reply_details.reply = "Sick chain G, might have to get one myself!"
         return reply_details

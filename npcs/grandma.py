@@ -24,8 +24,8 @@ class Grandma(NPC):
         elif response == "Are you a Werewolf?":
             reply_details.reply = "No. Why would you think that?"
             reply_details.reply_options.append(MenuOption("*Press the necklace against her again*",self))
-            reply_details.action = f"You press the silver necklace against {self.name}"
         elif response == "*Press the necklace against her again*":
             reply_details.reply = "I TOLD YOU NOT TO DO THAT!!"
-            reply_details.action = "Grandma runs through the wall and of into the distance... You realise she was the murderer all along..."
+            reply_details.action = f"You press the silver necklace against {self.name} \nShe runs through the wall and of into the distance... You realise she was the murderer all along..."
+            player.found_murderer = True
         return reply_details

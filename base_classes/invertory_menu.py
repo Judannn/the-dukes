@@ -10,9 +10,14 @@ class InventoryMenu:
         self.options = []
         self.description = ""
         self.menu_level = 1
-        self.menu_loop()
     
-    def menu_loop(self):
+    def setup(self):
+        self.options = []
+        self.description = ""
+        self.menu_level = 1
+    
+    def open_menu(self):
+        self.setup()
         while self.menu_level > 0:
             if not self.options:
                 self.collect_item_options()
