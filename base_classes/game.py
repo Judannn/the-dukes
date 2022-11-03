@@ -1,6 +1,7 @@
 import inspect
 from locale import LC_MESSAGES
 import os
+import sys
 import time
 from xml.etree.ElementTree import tostring
 from base_classes.coordinates import Coordinates
@@ -19,6 +20,7 @@ from items.battery import Battery
 from items.dog_hair import DogHair
 from items.potion import Potion
 from items.silver_necklace import SilverNecklace
+from colorama import Fore
 
 from npcs.daisy import Daisy
 from npcs.duke import Duke
@@ -31,18 +33,7 @@ class Game:
     def __init__(self) -> None:
         self.player = None
         self.continue_game = True
-        self.new_game()
-    
-    def new_game(self):
-        self.player = None
-        self.continue_game = True
-        player_name = self.game_intro()
-        self.setup(player_name)
-        self.run()
-    
-    def game_intro(self):
-        os.system('clear')
-        heading1 = """
+        self.heading_logo = Fore.RED + """
 ▄▄▄█████▓ ██░ ██ ▓█████    ▓█████▄  █    ██  ██ ▄█▀▓█████   ██████ 
 ▓  ██▒ ▓▒▓██░ ██▒▓█   ▀    ▒██▀ ██▌ ██  ▓██▒ ██▄█▒ ▓█   ▀ ▒██    ▒ 
 ▒ ▓██░ ▒░▒██▀▀██░▒███      ░██   █▌▓██  ▒██░▓███▄░ ▒███   ░ ▓██▄   
@@ -54,27 +45,36 @@ class Game:
         ░  ░  ░   ░  ░      ░       ░     ░  ░      ░  ░      ░  
                             ░                                      
 """
-        print(heading1)
-        print("                    A Muder Mystery Game                         ")
-        print()
-        player_name = input("Please enter your player name:\n")
+        self.new_game()
+    
+    def new_game(self):
+        self.player = None
+        self.continue_game = True
+        player_name = self.game_intro()
+        self.setup(player_name)
+        self.run()
+    
+    def game_intro(self):
         os.system('clear')
-        welcome = f"Welcome {player_name}\nThere seems to have been a murder in the Dukes house\nSee if you can find out who it was...\nFor help with controls press 'h'\nGood Luck!"
-        string = ""
-        for chr in welcome:
-            os.system('clear')
-            print(heading1)
-            print("                    A Muder Mystery Game                         ")
-            print(string)
-            string += chr
-            time.sleep(0.05)
-        
+        print(self.heading_logo)
+        print(Fore.RED + "                    A Muder Mystery Game                         ")
         print()
-        time.sleep(3)
-        
+        player_name = input(Fore.WHITE + "Please enter your player name:\n")
+        self.type_write(f"Welcome {player_name}\nThere seems to have been a murder in the Dukes house.\nSee if you can find out who it was...\nFor help with controls press 'h'\nGood Luck!...",0.05)
+        time.sleep(2)
+
         return player_name
     
-    
+    def type_write(self, print_string, timing):
+        string = ""
+        for chr in print_string:
+            os.system('clear')
+            print(self.heading_logo)
+            print(Fore.RED + "                    A Murder Mystery Game                         ",)
+            print(Fore.WHITE + string)
+            string += chr
+            time.sleep(timing)
+
     def run(self):
         while self.continue_game:
             os.system('clear')
@@ -85,7 +85,7 @@ class Game:
             self.print_action_descriptions()
             self.print_action_options()
             while True:
-                player_input = input().lower()
+                player_input = input(Fore.WHITE + "Input: ").lower()
                 if player_input.isnumeric():
                     if self.player.action_options and int(player_input) <= len(self.player.action_options)-1:
                         break
@@ -94,11 +94,7 @@ class Game:
                 self.print_console()
             self.player.player_action(player_input)
             if self.player.found_murderer:
-                replay_game = self.finish_game()
-                if replay_game:
-                    return True
-                else:
-                    return False
+                self.finish_game()
 
     def print_console(self):
         os.system('clear')
@@ -109,25 +105,27 @@ class Game:
     
     def finish_game(self):
         os.system('clear')
-        self.print_room()
-        self.print_action_descriptions()
+        print(self.heading_logo)
+        print(Fore.RED + "                    A Murder Mystery Game                         ")
+        print()
+        self.type_write(f"You press the silver necklace against Grandma She runs through the wall and of into the distance...\nYou realise she was the murderer all along...\nSo {self.player.name} you figured it out... Until next time...",0.05)
         print("")
-        print("")
-        self.continue_game
+        input("Press any key to exit.")
+        self.continue_game = False
     
     def setup(self, player_name):
         # create Player
         player1 = Player(player_name,Coordinates(3,3))
         player1.player_map.visited_locations.append("Dining Room")
         # comment out below when not testing
-        # player1.pick_up_item(Potion("Concoction"))
+        player1.pick_up_item(Potion("Concoction"))
         player1.pick_up_item(SilverNecklace("Silver Necklace"))
-        player1.pick_up_item(Berries("Berries"))
-        player1.pick_up_item(Water("Water"))
-        player1.pick_up_item(Battery("Battery"))
-        player1.pick_up_item(DogHair("Dog Hair"))
-        # player1.spoke_to_dog = True
-        # player1.spoke_to_luke = True
+        # player1.pick_up_item(Berries("Berries"))
+        # player1.pick_up_item(Water("Water"))
+        # player1.pick_up_item(Battery("Battery"))
+        # player1.pick_up_item(DogHair("Dog Hair"))
+        player1.spoke_to_dog = True
+        player1.spoke_to_luke = True
 
 
         self.player = player1
@@ -282,7 +280,7 @@ class Game:
 
     def print_room(self):
         self.player.current_room.update_room()
-        print(f"Current Room: {self.player.current_room.name}")
+        print(Fore.RED + f"Current Room: {self.player.current_room.name}")
         for i in self.player.current_room.room:
             string = ""
             for e in i:
@@ -296,17 +294,17 @@ class Game:
         if self.player.action_options:
             option_id = 0
             for option in self.player.action_options:
-                print(f"{option_id}. {option.text}")
+                print(Fore.WHITE + f"{option_id}. {option.text}")
                 option_id += 1
     
     def print_action_descriptions(self):
         if self.player.action_descriptions:
             for action in self.player.action_descriptions:
-                print(action)
+                print(Fore.WHITE + action)
             self.player.action_descriptions = []
     
     def print_npc_replies(self):
         if self.player.npc_replies:
             for chat in self.player.npc_replies:
-                print(chat)
+                print(Fore.WHITE + chat)
             self.player.npc_replies = []

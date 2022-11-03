@@ -20,18 +20,18 @@ class Duke(NPC):
         if response == f"Talk to {self.name}":
             if self.quest_complete == False:
                 if self.quest_accepted == False:
-                    reply_details.reply = "I'm just trying to do something one second."
+                    reply_details.reply = f"{self.name}: I'm just trying to do something one second."
                     reply_details.reply_options.append(MenuOption("What are you doing?",self))
                     reply_details.reply_options.append(MenuOption("Oh ok never mind then.",self))
                 else:
-                    reply_details.reply = "Did you find it all?"
+                    reply_details.reply = f"{self.name}: Did you find it all?"
                     reply_details.reply_options.append(MenuOption("Yep!",self))
                     reply_details.reply_options.append(MenuOption("Nope...",self))
             else:
-                reply_details.reply = "How's that concoction going?"
+                reply_details.reply = f"{self.name}: How's that concoction going?"
         elif response == "Yep!":
             if self.has_all_quest_items(player.item_bag):
-                reply_details.reply = "Sweet, here you go!.. Dare you to drink it..."
+                reply_details.reply = f"{self.name}: Sweet, here you go!.. Dare you to drink it..."
                 reply_details.item = Potion("Soupy Concoction")
                 reply_details.action = f"{self.name} gives you a weird soupy concoction."
                 self.quest_complete = True
@@ -39,21 +39,21 @@ class Duke(NPC):
                     if isinstance(item, Berries) or isinstance(item, Water) or isinstance(item, Battery) or isinstance(item, DogHair):
                         player.item_bag.remove(item)
             else:
-                reply_details.reply = "You don't have all the items yet. You need a battery, some animal hair, berries and some water..."
+                reply_details.reply = f"{self.name}: You don't have all the items yet. You need a battery, some animal hair, berries and some water..."
         elif response == "What are you doing?":
-            reply_details.reply = "I'm making this thing, I'm missing a few things though... Can you help?"
+            reply_details.reply = f"{self.name}: I'm making this thing, I'm missing a few things though... Can you help?"
             reply_details.reply_options.append(MenuOption("Yeah sure! What do you need?",self))
             reply_details.reply_options.append(MenuOption("Nah I'm good.",self))
         elif response == "Yeah sure! What do you need?":
             self.quest_accepted = True
             player.accepted_duke_quest = True
-            reply_details.reply = "Ok well I need a battery, some animal hair, berries and some water, be quick!"
+            reply_details.reply = f"{self.name}: Ok well I need a battery, some animal hair, berries and some water, be quick!"
         elif response == f"Press silver necklace against {self.name}":
             reply_details.action = f"You press the silver necklace against {self.name}"
-            reply_details.reply = "ahhh what are you doing?"
+            reply_details.reply = f"{self.name}: ahhh what are you doing?"
             reply_details.reply_options.append(MenuOption("Oh nothing...",self))
         elif response == "Oh nothing...":
-            reply_details.reply = "Cool cool cool cool..."
+            reply_details.reply = f"{self.name}: Cool cool cool cool..."
         return reply_details
 
     def has_all_quest_items(self,player_items):

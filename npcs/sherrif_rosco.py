@@ -10,17 +10,17 @@ class SherrifRoscoe(NPC):
     def talk(self, response, player):
         reply_details = NPCReply()
         if response == f"Talk to {self.name}":
-            reply_details.reply = "What do you want!?"
+            reply_details.reply = f"{self.name}: What do you want!?"
             reply_details.reply_options.append(MenuOption("What happened here?",self))
             reply_details.reply_options.append(MenuOption("Who did it?",self))
         elif response == "What happened here?":
-            reply_details.reply = "Someone killed her!"
+            reply_details.reply = f"{self.name}: Someone killed her!"
             reply_details.reply_options.append(MenuOption("Killed who?",self))
         elif response == "Killed who?":
-            reply_details.reply = "Samantha!"
+            reply_details.reply = f"{self.name}: Samantha!"
         elif response == "Who did it?":
-            reply_details.reply = "I don't bloody know, I'm trying to figure it out..."
+            reply_details.reply = f"{self.name}: I don't bloody know, I'm trying to figure it out..."
         elif response == f"Press silver necklace against {self.name}":
             reply_details.action = f"You press the silver necklace against {self.name}"
-            reply_details.reply = "Buddy, Pal, you're a bit weird arn't you. Stop bothering me now alright..."
+            reply_details.reply = f"{self.name}: Buddy, Pal, you're a bit weird arn't you. Stop bothering me now alright..."
         return reply_details

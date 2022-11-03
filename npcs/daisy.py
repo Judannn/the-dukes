@@ -10,20 +10,20 @@ class Daisy(NPC):
     def talk(self, response, player):
         reply_details = NPCReply()
         if response == f"Talk to {self.name}":
-            reply_details.reply = "Ahhhh get out my room!"
+            reply_details.reply = f"{self.name}: Ahhhh get out my room!"
             reply_details.reply_options.append(MenuOption("Oh sorry!",self))
             reply_details.reply_options.append(MenuOption("Do you know anything about Lulu?",self))
         elif response == "Oh sorry!":
-            reply_details.reply = "Should be! Now get out!"
+            reply_details.reply = f"{self.name}: Should be! Now get out!"
         elif response == "Do you know anything about Lulu?":
-            reply_details.reply = "Now is not the right time to be talking about this... Now get out!"
+            reply_details.reply = f"{self.name}: Now is not the right time to be talking about this... Now get out!"
         elif response == f"Press silver necklace against {self.name}":
             reply_details.action = f"You press the silver necklace against {self.name}"
-            reply_details.reply = "ahhh what are you doing?"
+            reply_details.reply = f"{self.name}: ahhh what are you doing?"
             reply_details.reply_options.append(MenuOption("Oh nothing...",self))
         elif response == "Oh nothing...":
-            reply_details.reply = "Cool cool cool cool..."
+            reply_details.reply = f"{self.name}: Cool cool cool cool..."
         elif response == f"Press silver necklace against {self.name}":
             reply_details.action = f"You press the silver necklace against {self.name}"
-            reply_details.reply = "Errrr why are you pressing my necklace against me... weirdo..."
+            reply_details.reply = f"{self.name}: Errrr why are you pressing my necklace against me... weirdo..."
         return reply_details

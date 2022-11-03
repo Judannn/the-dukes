@@ -14,6 +14,11 @@ class HelpMenu:
 
     def print_menu(self):
         os.system('clear')
+        print(f"{' ' * 10} SYMBOLS {' ' * 10}")
+        print("Player (You) - '@'")
+        print("NPC - '&'")
+        print("Door - 'D'")
+        print("Item - '^'")
         print(f"{' ' * 10} CONTROLS {' ' * 10}")
         print("Move Forward - 'w'")
         print("Move Backward - 's'")

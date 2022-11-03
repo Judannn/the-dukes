@@ -1,5 +1,6 @@
 from this import d
 from base_classes.player import Player
+from colorama import Fore
 
 class Room:
     def __init__(self, name, rows, columns):
@@ -36,7 +37,20 @@ class Room:
         for row in range(rows):
             #Add border Columns
             for column in range(columns):
+                if column == 0:
+                    self.room[row][column] = Fore.LIGHTWHITE_EX +  "     ░▒▓╣"
+                if column == columns -1:
+                    self.room[row][column] = Fore.LIGHTWHITE_EX +  "╠▓▒░"
                 if row == 0 or row == rows - 1:
-                    self.room[row][column] = "─"
-                if column == 0 or column == columns - 1:
-                    self.room[row][column] = "│"
+                    if row == 0 and column == 0:
+                        self.room[row][column] = Fore.LIGHTWHITE_EX +  "     ░▒▓╬"
+                    elif row == rows -1 and column == 0:
+                        self.room[row][column] = Fore.LIGHTWHITE_EX +  "     ░▒▓╬"
+                    elif row == 0 and column == columns - 1:
+                        self.room[row][column] = Fore.LIGHTWHITE_EX +  "╬▓▒░"
+                    elif row == rows -1 and column == columns -1:
+                        self.room[row][column] = Fore.LIGHTWHITE_EX +  "╬▓▒░"
+                    elif row == 0:
+                        self.room[row][column] = Fore.LIGHTWHITE_EX +  "╩"
+                    elif row == rows - 1:
+                        self.room[row][column] = Fore.LIGHTWHITE_EX +  "╦"

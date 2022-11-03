@@ -4,3 +4,4 @@ class NPCReply:
         self.reply = []
         self.action = []
         self.item = None
+        self.npc = None
