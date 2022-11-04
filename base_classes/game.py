@@ -1,26 +1,26 @@
 import inspect
 from locale import LC_MESSAGES
 import os
-import sys
 import time
 from xml.etree.ElementTree import tostring
+from colorama import Fore
+
+from graphics import graphics
+
 from base_classes.coordinates import Coordinates
 from base_classes.door import Door
-from base_classes.invertory_menu import InventoryMenu
 from base_classes.npc import NPC
 from base_classes.player import Player
-from base_classes.player_map import PlayerMap
 from base_classes.room import Room
 from base_classes.item import Item
-from base_classes.object_types import ObjectTypes
 from base_classes.menu_option import MenuOption
+
 from items.berries import Berries
 from items.water import Water
 from items.battery import Battery
 from items.dog_hair import DogHair
 from items.potion import Potion
 from items.silver_necklace import SilverNecklace
-from colorama import Fore
 
 from npcs.daisy import Daisy
 from npcs.duke import Duke
@@ -29,25 +29,59 @@ from npcs.dog import Dog
 from npcs.luke import Luke
 from npcs.sherrif_rosco import SherrifRoscoe
 
+
 class Game:
+    '''
+    A class which creates and runs the game
+
+    ...
+
+    Attributes
+    ----------
+    player : Player
+        the player reference for the game.
+    continue_game : bool
+        used to check if game is complete or not.
+
+    Methods
+    -------
+    new_game()
+        Prepares a new game to be played, runs through intro, setup then into gameplay.
+    game_intro()
+        Plays the intro to the game where the username of the player is asked.
+    run()
+        Runs all gameplay code in order to play the game.
+    finish_game()
+        Runs the outro then stops the game once the player presses any key.
+    collect_action_options()
+        Returns a list of player options for any object the player is standing on.
+    has_silver_necklace()
+        Checks if the player has a silver necklace in there item_bag.
+    is_same_coord(first_coordinate, second_coordinate)
+        Checks if two coordinates are the same.
+    print_console()
+        Prints all game info into the console.
+    print_room()
+        Prints the players current room to console.
+    print_action_options()
+        Prints the players current actions options available to console.
+    print_action_descriptions()
+        Prints the players action desciptions to console.
+    print_npc_replies()
+        Prints npc's reply options to console.
+    type_write(print_string, timing)
+        Prints to console but in a typewriter style by clearing the console.
+    setup(player_name)
+        Instantiates all class objects required for the game.
+    '''
+
     def __init__(self) -> None:
         self.player = None
         self.continue_game = True
-        self.heading_logo = Fore.RED + """
-▄▄▄█████▓ ██░ ██ ▓█████    ▓█████▄  █    ██  ██ ▄█▀▓█████   ██████ 
-▓  ██▒ ▓▒▓██░ ██▒▓█   ▀    ▒██▀ ██▌ ██  ▓██▒ ██▄█▒ ▓█   ▀ ▒██    ▒ 
-▒ ▓██░ ▒░▒██▀▀██░▒███      ░██   █▌▓██  ▒██░▓███▄░ ▒███   ░ ▓██▄   
-░ ▓██▓ ░ ░▓█ ░██ ▒▓█  ▄    ░▓█▄   ▌▓▓█  ░██░▓██ █▄ ▒▓█  ▄   ▒   ██▒
-▒██▒ ░ ░▓█▒░██▓░▒████▒   ░▒████▓ ▒▒█████▓ ▒██▒ █▄░▒████▒▒██████▒▒
-▒ ░░    ▒ ░░▒░▒░░ ▒░ ░    ▒▒▓  ▒ ░▒▓▒ ▒ ▒ ▒ ▒▒ ▓▒░░ ▒░ ░▒ ▒▓▒ ▒ ░
-    ░     ▒ ░▒░ ░ ░ ░  ░    ░ ▒  ▒ ░░▒░ ░ ░ ░ ░▒ ▒░ ░ ░  ░░ ░▒  ░ ░
-░       ░  ░░ ░   ░       ░ ░  ░  ░░░ ░ ░ ░ ░░ ░    ░   ░  ░  ░  
-        ░  ░  ░   ░  ░      ░       ░     ░  ░      ░  ░      ░  
-                            ░                                      
-"""
         self.new_game()
     
     def new_game(self):
+        '''Prepares a new game to be played, runs through intro, setup then into gameplay.'''
         self.player = None
         self.continue_game = True
         player_name = self.game_intro()
@@ -55,27 +89,19 @@ class Game:
         self.run()
     
     def game_intro(self):
+        '''Plays the intro to the game where the username of the player is asked.'''
         os.system('clear')
-        print(self.heading_logo)
-        print(Fore.RED + "                    A Muder Mystery Game                         ")
+        print(graphics.heading_logo)
+        print(Fore.RED + "                    A Murder Mystery Game                         ")
         print()
         player_name = input(Fore.WHITE + "Please enter your player name:\n")
         self.type_write(f"Welcome {player_name}\nThere seems to have been a murder in the Dukes house.\nSee if you can find out who it was...\nFor help with controls press 'h'\nGood Luck!...",0.05)
         time.sleep(2)
 
         return player_name
-    
-    def type_write(self, print_string, timing):
-        string = ""
-        for chr in print_string:
-            os.system('clear')
-            print(self.heading_logo)
-            print(Fore.RED + "                    A Murder Mystery Game                         ",)
-            print(Fore.WHITE + string)
-            string += chr
-            time.sleep(timing)
 
     def run(self):
+        '''Runs all gameplay code in order to play the game.'''
         while self.continue_game:
             os.system('clear')
             self.print_room()
@@ -95,15 +121,9 @@ class Game:
             self.player.player_action(player_input)
             if self.player.found_murderer:
                 self.finish_game()
-
-    def print_console(self):
-        os.system('clear')
-        self.print_room()
-        self.print_action_descriptions()
-        self.print_npc_replies()
-        self.print_action_options()
     
     def finish_game(self):
+        '''Runs the outro then stops the game once the player presses any key.'''
         os.system('clear')
         print(self.heading_logo)
         print(Fore.RED + "                    A Murder Mystery Game                         ")
@@ -112,23 +132,140 @@ class Game:
         print("")
         input("Press any key to exit.")
         self.continue_game = False
+
+    def collect_action_options(self):
+        '''Returns a list of player options for any object the player is standing on.'''
+        options = []
+        for object in self.player.current_room.object_list:
+            if self.is_same_coord(self.player.coordinates, object.coordinates) and not isinstance(object, Player):
+                if isinstance(object, Item):
+                    options.append(MenuOption(f"Pick up {object.name}", object))
+                if isinstance(object, NPC):
+                    options.append(MenuOption(f"Talk to {object.name}", object))
+                    if isinstance(object, Dog) and object.has_hair and self.player.accepted_duke_quest:
+                        options.append(MenuOption(f"Take Dog hair", object))
+                    elif self.player.spoke_to_luke and self.has_silver_necklace:
+                        options.append(MenuOption(f"Press silver necklace against {object.name}", object))
+                if isinstance(object, Door):
+                    options.append(MenuOption(f"Enter {object.linked_room.name}", object))
+        return options
+
+    def has_silver_necklace(self):
+        '''
+        Checks if the player has a silver necklace in there item_bag.
+        
+        Returns
+        ----------
+        True : if player has a silver necklace
+        False : if player doesn't have a silver necklace
+        '''
+        for item in self.player.item_bag:
+            if isinstance(item, SilverNecklace):
+                return True
+        return False
+
+    def is_same_coord(self, first_coordinate, second_coordinate):
+        '''
+        Checks if two coordinates are the same.
+        
+        Parameters
+        ----------
+        first_coordinate : Coordinate
+        second_coordinate : Coordinate
+
+        Returns
+        ----------
+        True : if coordinates match
+        False : if coordinates don't match
+        '''
+        if first_coordinate.row == second_coordinate.row:
+                if first_coordinate.column == second_coordinate.column:
+                    return True
+        return False
+
+    def print_console(self):
+        '''Prints all game info into the console.'''
+        os.system('clear')
+        self.print_room()
+        self.print_action_descriptions()
+        self.print_npc_replies()
+        self.print_action_options()
+
+    def print_room(self):
+        '''Prints the players current room to console.'''
+        self.player.current_room.update_room()
+        print(Fore.RED + f"Current Room: {self.player.current_room.name}")
+        for i in self.player.current_room.room:
+            string = ""
+            for e in i:
+                if(isinstance(e, str)):
+                    string += e
+                else:
+                    string += e.graphic_char.value
+            print(string)
     
+    def print_action_options(self):
+        '''Prints the players current actions options available to console.'''
+        if self.player.action_options:
+            option_id = 0
+            for option in self.player.action_options:
+                print(Fore.WHITE + f"{option_id}. {option.text}")
+                option_id += 1
+    
+    def print_action_descriptions(self):
+        '''Prints the players action desciptions to console.'''
+        if self.player.action_descriptions:
+            for action in self.player.action_descriptions:
+                print(Fore.WHITE + action)
+            self.player.action_descriptions = []
+    
+    def print_npc_replies(self):
+        '''Prints npc's reply options to console.'''
+        if self.player.npc_replies:
+            for chat in self.player.npc_replies:
+                print(Fore.WHITE + chat)
+            self.player.npc_replies = []
+
+    def type_write(self, print_string, timing):
+        '''
+        Prints to console but in a typewriter style by clearing the console.
+
+        Parameters
+        ----------
+        print_string : string
+        timing : float
+        '''
+        string = ""
+        for chr in print_string:
+            os.system('clear')
+            print(graphics.heading_logo)
+            print(Fore.RED + "                    A Murder Mystery Game                         ",)
+            print(Fore.WHITE + string)
+            string += chr
+            time.sleep(timing)
+
     def setup(self, player_name):
-        # create Player
+        '''
+        Instantiates all class objects required for the game.
+
+        Parameters
+        ----------
+        player_name : string
+        '''
+        # Create Player
+        self.player = player1
         player1 = Player(player_name,Coordinates(3,3))
         player1.player_map.visited_locations.append("Dining Room")
-        # comment out below when not testing
-        player1.pick_up_item(Potion("Concoction"))
-        player1.pick_up_item(SilverNecklace("Silver Necklace"))
+
+        # # comment out below when not testing
+        # player1.pick_up_item(Potion("Concoction"))
+        # player1.pick_up_item(SilverNecklace("Silver Necklace"))
         # player1.pick_up_item(Berries("Berries"))
         # player1.pick_up_item(Water("Water"))
         # player1.pick_up_item(Battery("Battery"))
         # player1.pick_up_item(DogHair("Dog Hair"))
-        player1.spoke_to_dog = True
-        player1.spoke_to_luke = True
-
-
-        self.player = player1
+        # player1.spoke_to_dog = True
+        # player1.spoke_to_luke = True
 
         # create npc's
         daisy = Daisy("Daisy",Coordinates(1,2))
@@ -243,68 +380,3 @@ class Game:
         # shed add objects
         shed.add_object(shed_door)
         shed.add_object(duke)
-
-    def collect_action_options(self):
-        options = []
-        for object in self.player.current_room.object_list:
-            if self.is_same_coord(self.player.coordinates, object.coordinates) and not isinstance(object, Player):
-                self.collect_object_options(object)
-                if isinstance(object, Item):
-                    options.append(MenuOption(f"Pick up {object.name}", object))
-                if isinstance(object, NPC):
-                    options.append(MenuOption(f"Talk to {object.name}", object))
-                    if isinstance(object, Dog) and object.has_hair and self.player.accepted_duke_quest:
-                        options.append(MenuOption(f"Take Dog hair", object))
-                    elif self.player.spoke_to_luke and self.has_silver_necklace:
-                        options.append(MenuOption(f"Press silver necklace against {object.name}", object))
-                if isinstance(object, Door):
-                    options.append(MenuOption(f"Enter {object.linked_room.name}", object))
-        return options
-
-    def has_silver_necklace(self):
-        for item in self.player.item_bag:
-            if isinstance(item, SilverNecklace):
-                return True
-        return False
-
-    def collect_object_options(self, object):
-        method_list = [func for func in dir(object) if callable(getattr(object, func)) and not func.startswith("__")]
-        lsit = inspect.getmembers(object, predicate=inspect.ismethod)
-        test = None
-
-    def is_same_coord(self, first_coordinate, second_coordinate):
-        if first_coordinate.row == second_coordinate.row:
-                if first_coordinate.column == second_coordinate.column:
-                    return True
-        return False
-
-    def print_room(self):
-        self.player.current_room.update_room()
-        print(Fore.RED + f"Current Room: {self.player.current_room.name}")
-        for i in self.player.current_room.room:
-            string = ""
-            for e in i:
-                if(isinstance(e, str)):
-                    string += e
-                else:
-                    string += e.graphic_char.value
-            print(string)
-    
-    def print_action_options(self):
-        if self.player.action_options:
-            option_id = 0
-            for option in self.player.action_options:
-                print(Fore.WHITE + f"{option_id}. {option.text}")
-                option_id += 1
-    
-    def print_action_descriptions(self):
-        if self.player.action_descriptions:
-            for action in self.player.action_descriptions:
-                print(Fore.WHITE + action)
-            self.player.action_descriptions = []
-    
-    def print_npc_replies(self):
-        if self.player.npc_replies:
-            for chat in self.player.npc_replies:
-                print(Fore.WHITE + chat)
-            self.player.npc_replies = []
