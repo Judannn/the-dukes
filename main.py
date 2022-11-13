@@ -1,4 +1,4 @@
 from base_classes.game import Game
 
-# Constructs the Game class object.
+# Starts the game
 game = Game()

@@ -10,7 +10,86 @@ from base_classes.player_map import PlayerMap
 from npcs.dog import Dog
 
 class Player:
+    '''
+    A class which represents a Player
+
+    ...
+
+    Attributes
+    ----------
+    name : string
+        the Player name
+    graphic_char : []
+        used to define the Item with a ASCII character
+    item_bag : []
+        defines a player item_bag
+    coordinates : Coordinates
+        defines the Coordinates of the Player
+    current_room : Room
+        defines which room the Player is in
+    is_talking : bool
+        defines if a Player is talking to an NPC
+    action_options : []
+        a list of action options available to the Player
+    action_descriptions : []
+        a list of action descriptions conducted by the Player
+    npc_replies : []
+        a list of NPC replies available to the Player
+    accepted_duke_quest : bool
+        defines whether the Player has accepted Dukes quest
+    drank_concoction : bool
+        defines whether the Player has drank the Concoction
+    spoke_to_dog : bool
+        defines whether the Player has spoken the Dog
+    spoke_to_luke : bool
+        defines whether the Player has spoken to Luke
+    found_murderer : bool
+        defines whether the Player has found the murder.
+    inventory_menu = InventoryMenu
+        the player inventory menu
+    help_menu : HelpMenu
+        the player help menu
+    player_map : PlayerMap
+        the player map menu
+
+    Methods
+    -------
+    player_action(player_input)
+        receives a player input and acts accordinly to the input
+    move(key_input)
+        distributes the key_input to the correct movement direction
+    move_up()
+        moves the player coordinates up if possible
+    move_down()
+        moves the player coordinates down if possible
+    move_left()
+        moves the player coordinates left if possible
+    move_right()
+        moves the player coordinates right if possible
+    pick_up_item(Item)
+        picks up an item from the ground
+    talk(NPC, response=None)
+        talk to an NPC and returns an NPCReply
+    add_action_options(options)
+        adds the action options to the action_options list
+    add_action_description(action_description)
+        adds action descriptions to the action_descriptions list
+    enter_door(door)
+        moves the player into a new room through the door
+    drink_concoction()
+        drinks the concoction
+    '''
     def __init__(self, name, coordinates) -> None:
+        '''
+        Constructs all the necessary attributes for the Player object
+
+        Parameters
+        ----------
+        name : str
+            the name of the Player
+        coordinates : Coordinates
+            the coordinates of the Player
+        '''
         self.name = name
         self.graphic_char = ObjectTypes.PLAYER
         self.item_bag = []
@@ -30,6 +109,13 @@ class Player:
         self.player_map = PlayerMap()
     
     def player_action(self, player_input):
+        '''
+        Receives a player input and acts accordinly to the input
+        
+        Parameters
+        ----------
+        player_input : string
+        '''
         if player_input.isnumeric():
             object = self.action_options[int(player_input)].object
             if isinstance(object, Item):
@@ -61,53 +147,77 @@ class Player:
             elif player_input == "m":
                 self.player_map.open_map()
             else:
-                self.move(player_input, self.current_room)
+                self.move(player_input)
     
-    def move(self, key_input, room):
+    def move(self, key_input):
+        '''
+        Distributes the key_input to the correct movement direction
+        
+        Parameters
+        ----------
+        key_input : string
+        '''
         self.is_talking = False
         if key_input == "w":
-            self.move_up(room)
+            self.move_up()
         elif key_input == "s":
-            self.move_down(room)
+            self.move_down()
         elif key_input == "a":
-            self.move_left(room)
+            self.move_left()
         elif key_input == "d":
-            self.move_right(room)
+            self.move_right()
 
-    def move_up(self, room):
+    def move_up(self):
+        '''Moves the player coordinates up if possible'''
         if self.coordinates.row - 1 >= 0:
             self.coordinates.row = self.coordinates.row - 1
 
-    def move_down(self, room):
-        if self.coordinates.row + 1 <= room.rows - 1:
+    def move_down(self):
+        '''Moves the player coordinates down if possible'''
+        if self.coordinates.row + 1 <= self.current_room.rows - 1:
             self.coordinates.row = self.coordinates.row + 1
 
-    def move_left(self, room):
+    def move_left(self):
+        '''Moves the player coordinates left if possible'''
         if self.coordinates.column - 1 >= 0:
             self.coordinates.column = self.coordinates.column - 1
 
-    def move_right(self, room):
-        if self.coordinates.column + 1 <= room.columns - 1:
+    def move_right(self):
+        '''Moves the player coordinates right if possible'''
+        if self.coordinates.column + 1 <= self.current_room.columns - 1:
             self.coordinates.column = self.coordinates.column + 1
     
     def pick_up_item(self, Item):
+        '''Picks up an item from the ground'''
         self.item_bag.append(Item)
     
     def talk(self, npc, response=None):
+        '''
+        Talk to an NPC and returns an NPCReply
+
+        Parameters
+        ----------
+        npc : NPC
+        response : string
+
+        Returns
+        ----------
+        NPCReply
+        '''
         self.is_talking = True
         return npc.talk(response,self)
     
     def add_action_options(self, options):
+        '''Adds the action options to the action_options list'''
         for option in options:
             self.action_options.append(option)
     
-    def remove_action_options(self):
-        self.action_options = []
-    
     def add_action_description(self, action_description):
+        '''Adds action descriptions to the action_descriptions list'''
         self.action_description.append(action_description)
     
     def enter_door(self, door):
+        
         if door.linked_door == None:
             self.add_action_description("This door won't open...")
         else:
@@ -122,4 +232,5 @@ class Player:
                 self.player_map.visited_locations.append(f"{door.linked_room.name}")
     
     def drink_concotion(self):
+        '''Drinks the concoction'''
         self.drank_concoction = True

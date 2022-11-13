@@ -4,10 +4,42 @@ from base_classes.menu_option import MenuOption
 from base_classes.item import Item
 
 class Grandma(NPC):
+    '''
+    A class which represents a Grandma
+
+    ...
+
+    Methods
+    -------
+    talk(response, player)
+        Allows a player to speak to Grandma
+    '''
     def __init__(self, name, coordinates) -> None:
+        '''
+        Constructs all the necessary attributes for the Grandma object
+
+        Parameters
+        ----------
+        name : str
+            the name of Grandma
+        coordinates : Coordinates
+            the location of Grandma
+        '''
         super().__init__(name, coordinates)
 
     def talk(self, response, player):
+        '''
+        Allows a player to speak to Grandma
+        
+        Parameters
+        ----------
+        response : string
+        player : Player
+
+        Returns
+        ----------
+        reply_details : NPCReply
+        '''
         reply_details = NPCReply()
         if response == f"Talk to {self.name}":
             reply_details.reply = f"{self.name}: Oh hello deary, I'm making a coffee for the Sherrif."

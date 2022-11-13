@@ -4,7 +4,48 @@ from colorama import Fore
 from graphics import graphics
 
 class Room:
+    '''
+    A class which represents a Room
+
+    ...
+
+    Attributes
+    ----------
+    name : string
+        the room name
+    object_list : []
+        a list of objects that are in the room
+    rows : int
+        defines the height of the room
+    columns : int
+        defines the width of the room
+    room : []
+        an array which defines the height and width of the room
+
+    Methods
+    -------
+    add_object(object)
+        Adds an object to the list of objects in this Room
+    remove_object(object)
+        Removes an object from the list of objects in this Room
+    update_room()
+        Updates the object locations in the Room
+    room_border()
+        Used to add a graphical border around the Room
+    '''
     def __init__(self, name, rows, columns):
+        '''
+        Constructs all the necessary attributes for the Room object
+
+        Parameters
+        ----------
+        name : str
+            the name of the Room
+        rows : int
+            the height of the Room
+        columns : int
+            the width of the Room
+        '''
         self.name = name
         self.object_list = []
         self.rows = rows
@@ -12,6 +53,13 @@ class Room:
         self.room = [[" " for i in range(self.columns)] for j in range(self.rows)]
             
     def add_object(self, object):
+        '''
+        Adds an object to the list of objects in this Room
+        
+        Parameters
+        ----------
+        object : object
+        '''
         row = object.coordinates.row
         column = object.coordinates.column
         self.room[row][column] = object
@@ -21,9 +69,17 @@ class Room:
             object.current_room = self
 
     def remove_object(self, object):
+        '''
+        Removes an object from the list of objects in this Room
+        
+        Parameters
+        ----------
+        object : object
+        '''
         self.object_list.remove(object)
     
     def update_room(self):
+        '''Updates the object locations in the Room'''
         self.room_border()
         for object in self.object_list:
             row = object.coordinates.row + 1
@@ -31,6 +87,7 @@ class Room:
             self.room[row][column] = object
     
     def room_border(self):
+        '''Used to add a graphical border around the Room'''
         rows = self.rows + 2
         columns = self.columns + 2
         self.room = [[" " for i in range(columns)] for j in range(rows)]

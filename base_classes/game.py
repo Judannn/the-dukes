@@ -32,56 +32,57 @@ from npcs.sherrif_rosco import SherrifRoscoe
 
 class Game:
     '''
-    A class which creates and runs the game
+    A class which represents a Game
 
     ...
 
     Attributes
     ----------
     player : Player
-        the player reference for the game.
+        the player reference for the game
     continue_game : bool
-        used to check if game is complete or not.
+        used to check if game is complete or not
 
     Methods
     -------
     new_game()
-        Prepares a new game to be played, runs through intro, setup then into gameplay.
+        Prepares a new game to be played, runs through intro, setup then into gameplay
     game_intro()
-        Plays the intro to the game where the username of the player is asked.
+        Plays the intro to the game where the username of the player is asked
     run()
-        Runs all gameplay code in order to play the game.
+        Runs all gameplay code in order to play the game
     finish_game()
-        Runs the outro then stops the game once the player presses any key.
+        Runs the outro then stops the game once the player presses any key
     collect_action_options()
-        Returns a list of player options for any object the player is standing on.
+        Returns a list of player options for any object the player is standing on
     has_silver_necklace()
-        Checks if the player has a silver necklace in there item_bag.
+        Checks if the player has a silver necklace in there item_bag
     is_same_coord(first_coordinate, second_coordinate)
-        Checks if two coordinates are the same.
+        Checks if two coordinates are the same
     print_console()
-        Prints all game info into the console.
+        Prints all game info into the console
     print_room()
-        Prints the players current room to console.
+        Prints the players current room to console
     print_action_options()
-        Prints the players current actions options available to console.
+        Prints the players current actions options available to console
     print_action_descriptions()
-        Prints the players action desciptions to console.
+        Prints the players action desciptions to console
     print_npc_replies()
-        Prints npc's reply options to console.
+        Prints npc's reply options to console
     type_write(print_string, timing)
-        Prints to console but in a typewriter style by clearing the console.
+        Prints to console but in a typewriter style by clearing the console
     setup(player_name)
-        Instantiates all class objects required for the game.
+        Instantiates all class objects required for the game
     '''
 
     def __init__(self) -> None:
+        '''Constructs all the necessary attributes for the Game object'''
         self.player = None
         self.continue_game = True
         self.new_game()
     
     def new_game(self):
-        '''Prepares a new game to be played, runs through intro, setup then into gameplay.'''
+        '''Prepares a new game to be played, runs through the intro, setup then into gameplay'''
         self.player = None
         self.continue_game = True
         player_name = self.game_intro()
@@ -89,7 +90,13 @@ class Game:
         self.run()
     
     def game_intro(self):
-        '''Plays the intro to the game where the username of the player is asked.'''
+        '''
+        Plays the intro to the game and asks for a username from the player
+
+        Returns
+        ----------
+        string : the players user name
+        '''
         os.system('clear')
         print(graphics.heading_logo)
         print(Fore.RED + "                    A Murder Mystery Game                         ")
@@ -101,7 +108,7 @@ class Game:
         return player_name
 
     def run(self):
-        '''Runs all gameplay code in order to play the game.'''
+        '''Runs all gameplay code in order to play the game'''
         while self.continue_game:
             os.system('clear')
             self.print_room()
@@ -123,7 +130,7 @@ class Game:
                 self.finish_game()
     
     def finish_game(self):
-        '''Runs the outro then stops the game once the player presses any key.'''
+        '''Runs the outro then stops the game once the player presses any key'''
         os.system('clear')
         print(self.heading_logo)
         print(Fore.RED + "                    A Murder Mystery Game                         ")
@@ -134,7 +141,13 @@ class Game:
         self.continue_game = False
 
     def collect_action_options(self):
-        '''Returns a list of player options for any object the player is standing on.'''
+        '''
+        Returns a list of player options for any object the player is standing on
+
+        Returns
+        ----------
+        [] : List of action options
+        '''
         options = []
         for object in self.player.current_room.object_list:
             if self.is_same_coord(self.player.coordinates, object.coordinates) and not isinstance(object, Player):
@@ -152,7 +165,7 @@ class Game:
 
     def has_silver_necklace(self):
         '''
-        Checks if the player has a silver necklace in there item_bag.
+        Checks if the player has a silver necklace in their item_bag
         
         Returns
         ----------
@@ -166,7 +179,7 @@ class Game:
 
     def is_same_coord(self, first_coordinate, second_coordinate):
         '''
-        Checks if two coordinates are the same.
+        Checks if two coordinates are the same
         
         Parameters
         ----------
@@ -184,7 +197,7 @@ class Game:
         return False
 
     def print_console(self):
-        '''Prints all game info into the console.'''
+        '''Prints all game info into the console'''
         os.system('clear')
         self.print_room()
         self.print_action_descriptions()
@@ -192,7 +205,7 @@ class Game:
         self.print_action_options()
 
     def print_room(self):
-        '''Prints the players current room to console.'''
+        '''Prints the players current room to console'''
         self.player.current_room.update_room()
         print(Fore.RED + f"Current Room: {self.player.current_room.name}")
         for i in self.player.current_room.room:
@@ -205,7 +218,7 @@ class Game:
             print(string)
     
     def print_action_options(self):
-        '''Prints the players current actions options available to console.'''
+        '''Prints the players current actions options available to console'''
         if self.player.action_options:
             option_id = 0
             for option in self.player.action_options:
@@ -213,14 +226,14 @@ class Game:
                 option_id += 1
     
     def print_action_descriptions(self):
-        '''Prints the players action desciptions to console.'''
+        '''Prints the players action desciptions to console'''
         if self.player.action_descriptions:
             for action in self.player.action_descriptions:
                 print(Fore.WHITE + action)
             self.player.action_descriptions = []
     
     def print_npc_replies(self):
-        '''Prints npc's reply options to console.'''
+        '''Prints npc's reply options to console'''
         if self.player.npc_replies:
             for chat in self.player.npc_replies:
                 print(Fore.WHITE + chat)
@@ -228,7 +241,7 @@ class Game:
 
     def type_write(self, print_string, timing):
         '''
-        Prints to console but in a typewriter style by clearing the console.
+        Prints to console but in a typewriter style by clearing the console
 
         Parameters
         ----------
@@ -246,15 +259,15 @@ class Game:
 
     def setup(self, player_name):
         '''
-        Instantiates all class objects required for the game.
+        Instantiates all class objects required for the game
 
         Parameters
         ----------
         player_name : string
         '''
         # Create Player
-        self.player = player1
         player1 = Player(player_name,Coordinates(3,3))
+        self.player = player1
         player1.player_map.visited_locations.append("Dining Room")
 
         # # comment out below when not testing

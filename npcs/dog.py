@@ -5,11 +5,48 @@ from base_classes.item import Item
 from items.dog_hair import DogHair
 
 class Dog(NPC):
+    '''
+    A class which represents a Dog
+
+    ...
+
+    Attributes
+    ----------
+    has_hair : bool
+        defines whether the Dog has hair to take
+
+    Methods
+    -------
+    talk(response, player)
+        Allows a player to speak to Dog
+    '''
     def __init__(self, name, coordinates) -> None:
+        '''
+        Constructs all the necessary attributes for the Dog object
+
+        Parameters
+        ----------
+        name : str
+            the name of Dog
+        coordinates : Coordinates
+            the location of Dog
+        '''
         super().__init__(name, coordinates)
         self.has_hair = True
 
     def talk(self, response, player):
+        '''
+        Allows a player to speak to Dog
+        
+        Parameters
+        ----------
+        response : string
+        player : Player
+
+        Returns
+        ----------
+        reply_details : NPCReply
+        '''
         reply_details = NPCReply()
         if response == f"Talk to {self.name}":
             if player.drank_concoction:

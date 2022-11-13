@@ -6,16 +6,50 @@ from base_classes.player import Player
 from items.water import Water
 from items.battery import Battery
 from items.berries import Berries
-from items.dog_hair import DogHair
+from items.dog_hair import DukeHair
 from items.potion import Potion
 
 class Duke(NPC):
+    '''
+    A class which represents a Duke
+
+    ...
+
+    Methods
+    -------
+    talk(response, player)
+        Allows a player to speak to Duke
+    has_all_quest_items(player_items)
+        Checks if the Player has all items to complete the quest
+    '''
     def __init__(self, name, coordinates) -> None:
+        '''
+        Constructs all the necessary attributes for the Duke object
+
+        Parameters
+        ----------
+        name : str
+            the name of Duke
+        coordinates : Coordinates
+            the location of Duke
+        '''
         super().__init__(name, coordinates)
         self.quest_accepted = False
         self.quest_complete = False
 
     def talk(self, response, player: Player):
+        '''
+        Allows a player to speak to Duke
+        
+        Parameters
+        ----------
+        response : string
+        player : Player
+
+        Returns
+        ----------
+        reply_details : NPCReply
+        '''
         reply_details = NPCReply()
         player_items = player.item_bag[:]
         if response == f"Talk to {self.name}":
@@ -38,7 +72,7 @@ class Duke(NPC):
                 self.quest_complete = True
                 
                 for item in player_items:
-                    if isinstance(item, Berries) or isinstance(item, Water) or isinstance(item, Battery) or isinstance(item, DogHair):
+                    if isinstance(item, Berries) or isinstance(item, Water) or isinstance(item, Battery) or isinstance(item, DukeHair):
                         player.item_bag.remove(item)
             else:
                 reply_details.reply = f"{self.name}: You don't have all the items yet. You need a battery, some animal hair, berries and some water..."
@@ -59,11 +93,23 @@ class Duke(NPC):
         return reply_details
 
     def has_all_quest_items(self,player_items):
+        '''
+        Checks if the Player has all items to complete the quest
+        
+        Parameters
+        ----------
+        player_items : []
+
+        Returns
+        ----------
+        True : if has all items to complete quest
+        False : if does not have all items to complete quest
+        '''
         count = 0
         for item in player_items:
             if isinstance(item,Battery):
                 count += 1
-            elif isinstance(item,DogHair):
+            elif isinstance(item,DukeHair):
                 count += 1
             elif isinstance(item,Berries):
                 count += 1

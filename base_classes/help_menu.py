@@ -1,10 +1,21 @@
 import os
 
 class HelpMenu:
+    '''
+    A class which represents a HelpMenu
+    
+    Methods
+    -------
+    open_help()
+        Opens the help menu
+    print_menu()
+        Prints the help menu to console
+    '''
     def __init__(self) -> None:
         pass
 
     def open_help(self):
+        '''Opens the help menu'''
         user_input = None
         while True:
             self.print_menu()
@@ -13,6 +24,7 @@ class HelpMenu:
                 break
 
     def print_menu(self):
+        '''Prints the help menu to console'''
         os.system('clear')
         print(f"{' ' * 10} SYMBOLS {' ' * 10}")
         print("Player (You) - '@'")

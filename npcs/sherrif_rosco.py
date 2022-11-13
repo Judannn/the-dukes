@@ -4,10 +4,42 @@ from base_classes.menu_option import MenuOption
 from base_classes.item import Item
 
 class SherrifRoscoe(NPC):
+    '''
+    A class which represents a SherrifRoscoe
+
+    ...
+
+    Methods
+    -------
+    talk(response, player)
+        Allows a player to speak to SherrifRoscoe
+    '''
     def __init__(self, name, coordinates) -> None:
+        '''
+        Constructs all the necessary attributes for the SherrifRoscoe object
+
+        Parameters
+        ----------
+        name : str
+            the name of SherrifRoscoe
+        coordinates : Coordinates
+            the location of SherrifRoscoe
+        '''
         super().__init__(name, coordinates)
 
     def talk(self, response, player):
+        '''
+        Allows a player to speak to SherrifRoscoe
+        
+        Parameters
+        ----------
+        response : string
+        player : Player
+
+        Returns
+        ----------
+        reply_details : NPCReply
+        '''
         reply_details = NPCReply()
         if response == f"Talk to {self.name}":
             reply_details.reply = f"{self.name}: What do you want!?"

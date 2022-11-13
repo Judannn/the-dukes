@@ -1,5 +1,6 @@
 from colorama import Fore
 
+# A ASCII graphic for the intro and outro screen
 heading_logo = Fore.RED + """
 ▄▄▄█████▓ ██░ ██ ▓█████    ▓█████▄  █    ██  ██ ▄█▀▓█████   ██████ 
 ▓  ██▒ ▓▒▓██░ ██▒▓█   ▀    ▒██▀ ██▌ ██  ▓██▒ ██▄█▒ ▓█   ▀ ▒██    ▒ 
@@ -13,6 +14,7 @@ heading_logo = Fore.RED + """
                             ░                                      
 """
 
+# ASCII characters to define the room graphics
 top_border = "╩"
 bottom_border = "╦"
 top_left_border = "     ░▒▓╬"

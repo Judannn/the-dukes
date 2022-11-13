@@ -4,10 +4,42 @@ from base_classes.menu_option import MenuOption
 from base_classes.item import Item
 
 class Daisy(NPC):
+    '''
+    A class which represents a Daisy
+
+    ...
+
+    Methods
+    -------
+    talk(response, player)
+        Allows a player to speak to Daisy
+    '''
     def __init__(self, name, coordinates) -> None:
+        '''
+        Constructs all the necessary attributes for the Daisy object
+
+        Parameters
+        ----------
+        name : str
+            the name of Daisy
+        coordinates : Coordinates
+            the location of Daisy
+        '''
         super().__init__(name, coordinates)
     
     def talk(self, response, player):
+        '''
+        Allows a player to speak to Daisy
+        
+        Parameters
+        ----------
+        response : string
+        player : Player
+
+        Returns
+        ----------
+        reply_details : NPCReply
+        '''
         reply_details = NPCReply()
         if response == f"Talk to {self.name}":
             reply_details.reply = f"{self.name}: Ahhhh get out my room!"
