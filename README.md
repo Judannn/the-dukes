@@ -1,40 +1,32 @@
-# The Dukes
+# **The Dukes** <br/>
+#### *A murder mystery game.*
+<br/>
+<br/>
 
-`A murder mystery game.`<br/>
-`This is a single player, adventure text-based game`<br/>
-<br/><br/>
-Basic Mark down, this can be removed<br/>
-# Main heading
-## Second level heading
-### Third level heading
-**Bold** <br/>
-***Bold and Italic***
-- [ ] Lists
-- bullets <br/>
-[python:download](https://www.python.org/downloads/) Hyperlinks
-> text in a box
-> 
-`> Another type of text box`
+## **Introduction**
+This is a murder mystery game where you are dropped into The Dukes house. You are required to figure out who commited the murder by talking to characters and using items.
 
-## Introduction
+## **User Documentation**
+### Game play
+To play this game you will be required to type inputs and press the <kbd>enter</kbd> key. <br/>
+These inputs will be described to you through the game as either interaction options or pre-set inputs, these inputs are described below in the 'User Input Key's section.
 
+### Map
+![alt text for screen readers](the_dukes_map.png "Text to show on mouseover")
+### Icon Legend
+<span style="color:blue">D</span> - Door <br/>
+<span style="color:cyan">^</span> - Item <br/>
+<span style="color:green">&</span> - NPC <br/>
+<span style="color:magenta">@</span> - Player <br/>
 
+### Game Play Input Key's
+<kbd>h</kbd> - Opens Help Menu <br/>
+<kbd>i</kbd> - Opens Inventory Menu<br/>
+<kbd>m</kbd> - Opens Map Menu <br/>
+<kbd>0</kbd> or <kbd>1</kbd> or <kbd>2</kbd> or <kbd>3</kbd> - Option Inputs <br/><br/>
 
-
-## User Documentation
-#### Overview and rules
-
-
-#### Game play
-
-
-## Developer Documentation
-### Files and resources
-
-### User Requirements Specification
-
-#### Class Diagram
-
+## **Developer Documentation**
+### Class Diagram
 ```mermaid
 classDiagram
     NPC <|-- Daisy
@@ -48,6 +40,7 @@ classDiagram
     Item <|-- Berries
     Item <|-- DogHair
     Item <|-- Potion
+    Item <|-- Concoction
     Item <|-- SilverNecklace
     Item <|-- Water
 
@@ -60,19 +53,32 @@ classDiagram
     HelpMenu --* Player
     PlayerMap --* Player
     PlayerMap --* Player
+    BackPack --* Player
 
     Door -- Room
     NPC -- Room
     Player -- Room
     Item -- Room
 
-
+    Player -- Battery
+    Player -- Berries
+    Player -- DogHair
+    Player -- Potion
+    Player -- Concoction
+    Player -- SilverNecklace
+    Player -- Water
 
     Game -- Player
 
-
-
+    NPCReply -- Player
+    NPCReply -- NPC
     
+    MenuOption -- Player
+    MenuOption -- HelpMenu
+    MenuOption -- InventoryMenu
+    MenuOption -- Game
+
+
 
     class Coordinates{
         +int row
@@ -105,6 +111,16 @@ classDiagram
         +print_npc_replies()
         +type_write(print_string, timing)
         +setup(player_name)
+    }
+
+    class BackPack{
+        +[] _backpack
+        +sort()
+        +count()
+        +list()
+        +add(item)
+        +remove(item)
+        +in_backpack(item) int
     }
 
     class HelpMenu{
@@ -230,6 +246,14 @@ classDiagram
         +string name
         +Coordinates coordinates
         +string description
+        +drink(player)
+    }
+
+    class Concoction{
+        +string name
+        +Coordinates coordinates
+        +string description
+        +drink(player)
     }
 
     class SilverNecklace{

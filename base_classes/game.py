@@ -102,8 +102,8 @@ class Game:
         print(Fore.RED + "                    A Murder Mystery Game                         ")
         print()
         player_name = input(Fore.WHITE + "Please enter your player name:\n")
-        self.type_write(f"Welcome {player_name}\nThere seems to have been a murder in the Dukes house.\nSee if you can find out who it was...\nFor help with controls press 'h'\nGood Luck!...",0.05)
-        time.sleep(2)
+        # self.type_write(f"Welcome {player_name}\nThere seems to have been a murder in the Dukes house.\nSee if you can find out who it was...\nFor help with controls press 'h'\nGood Luck!...",0.05)
+        # time.sleep(2)
 
         return player_name
 
@@ -126,19 +126,29 @@ class Game:
                     break
                 self.print_console()
             self.player.player_action(player_input)
-            if self.player.found_murderer:
-                self.finish_game()
+            if self.player.found_murderer: # Check if player has found the murderer
+                self.finish_game(True)
+            if not self.player.is_alive: # Check if the player has died
+                self.finish_game(False)
     
-    def finish_game(self):
+    def finish_game(self, has_found_murderer):
         '''Runs the outro then stops the game once the player presses any key'''
         os.system('clear')
-        print(self.heading_logo)
+        print(graphics.heading_logo)
         print(Fore.RED + "                    A Murder Mystery Game                         ")
-        print()
-        self.type_write(f"You press the silver necklace against Grandma She runs through the wall and of into the distance...\nYou realise she was the murderer all along...\nSo {self.player.name} you figured it out... Until next time...",0.05)
-        print("")
-        input("Press any key to exit.")
-        self.continue_game = False
+        if has_found_murderer:
+            print()
+            self.type_write(f"You press the silver necklace against Grandma She runs through the wall and of into the distance...\nYou realise she was the murderer all along...\nSo {self.player.name} you figured it out... Until next time...",0.05)
+            print()
+        else:
+            print()
+            self.type_write(f"You suddenly die...\nMaybe it was something to do with that soupy concoction...\nSo {self.player.name} Until next time...",0.05)
+            print()
+        play_again = input("Press Y to play again or any other key to exit.").lower() == "y"
+        if play_again:
+            self.new_game()
+        else:
+            self.continue_game = False
 
     def collect_action_options(self):
         '''
@@ -268,15 +278,14 @@ class Game:
         # Create Player
         player1 = Player(player_name,Coordinates(3,3))
         self.player = player1
-        player1.player_map.visited_locations.append("Dining Room")
 
         # # comment out below when not testing
         # player1.pick_up_item(Potion("Concoction"))
-        # player1.pick_up_item(SilverNecklace("Silver Necklace"))
-        # player1.pick_up_item(Berries("Berries"))
-        # player1.pick_up_item(Water("Water"))
-        # player1.pick_up_item(Battery("Battery"))
-        # player1.pick_up_item(DogHair("Dog Hair"))
+        player1.pick_up_item(SilverNecklace("Silver Necklace"))
+        player1.pick_up_item(Berries("Berries"))
+        player1.pick_up_item(Water("Water"))
+        player1.pick_up_item(Battery("Battery"))
+        player1.pick_up_item(DogHair("Dog Hair"))
         # player1.spoke_to_dog = True
         # player1.spoke_to_luke = True
 

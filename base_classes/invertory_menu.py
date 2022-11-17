@@ -1,6 +1,7 @@
 import os
 from base_classes.menu_option import MenuOption
 from items.potion import Potion
+from items.concoction import Concoction
 
 
 class InventoryMenu:
@@ -72,10 +73,13 @@ class InventoryMenu:
         '''
         object = self.options[int(player_input)].object
         response = self.options[int(player_input)].text
-        if response == "Drink Concotion":
-            self.player.drink_concotion()
+        if self.menu_level == 2 and isinstance(object, Potion):
+            object.drink(self.player)
             self.menu_level = 0
             self.player.action_descriptions.append("You feel super dizzy! Maybe it wasn't a great idea to drink that...")
+        elif self.menu_level == 2 and isinstance(object, Concoction):
+            object.drink(self.player)
+            self.menu_level = 0
         else:
             if object == None:
                 self.options = []
@@ -84,9 +88,12 @@ class InventoryMenu:
             else:
                 self.menu_level += 1
                 self.options = []
-                if isinstance(object, Potion) and not self.player.drank_concoction:
+                if isinstance(object, Potion) and not self.player.drank_potion:
                     self.description = object.description
-                    self.options.append(MenuOption("Drink Concotion",object))
+                    self.options.append(MenuOption(f"Drink {object.name}",object))
+                elif isinstance(object, Concoction):
+                    self.description = object.description
+                    self.options.append(MenuOption(f"Drink {object.name}",object))
                 else:
                     self.description = object.description
                 self.options.append(MenuOption("Exit",None))
@@ -94,7 +101,7 @@ class InventoryMenu:
     def collect_item_options(self):
         '''Collects item options for the user'''
         self.options = []
-        for item in self.player.item_bag:
+        for item in self.player.backpack.list():
             self.options.append(MenuOption(item.name,item))
         self.options.append(MenuOption("Exit",None))
 

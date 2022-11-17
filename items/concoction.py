@@ -1,6 +1,6 @@
 from base_classes.item import Item
 
-class Potion(Item):
+class Concoction(Item):
     '''
     A class which represents a Potion
 
@@ -25,18 +25,17 @@ class Potion(Item):
             the name of the Potion
         coordinates : Coordinates
             defines the Coordinates of the Potion
-            
+
         Methods
         -------
         drink()
-            drinks the potion
+            drinks the concocation
         '''
         super().__init__(name, coordinates)
-        self.name = "Potion"
+        self.name = "Concotion"
         self.coordinates = coordinates
-        self.description = "A shimering potion."
+        self.description = "A soupy concotion."
         self.empty = False
         
     def drink(self, player):
-        player.drank_potion = True
-        self.description = "An empty potion bottle."
+        player.is_alive = False

@@ -43,7 +43,7 @@ class Luke(NPC):
         reply_details = NPCReply()
         if response == f"Talk to {self.name}":
             reply_details.reply = f"{self.name}: Hey {player.name} what's up?"
-            if player.drank_concoction:
+            if player.drank_potion:
                 reply_details.reply_options.append(MenuOption("I heard there was a Werewolf sighting out in the garden?!",self))
             reply_details.reply_options.append(MenuOption("Any idea who killed Lulu?",self))
         elif response == "I heard there was a Werewolf sighting out in the garden?!":

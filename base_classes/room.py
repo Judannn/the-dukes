@@ -67,6 +67,7 @@ class Room:
         # If a player add the current room to the player
         if isinstance(object, Player):
             object.current_room = self
+            object.player_map.add_visited_location(self)
 
     def remove_object(self, object):
         '''

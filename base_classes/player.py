@@ -7,7 +7,7 @@ from base_classes.item import Item
 from base_classes.npc import NPC
 from base_classes.object_types import ObjectTypes
 from base_classes.player_map import PlayerMap
-from npcs.dog import Dog
+from base_classes.backpack import BackPack
 
 class Player:
     '''
@@ -37,7 +37,7 @@ class Player:
         a list of NPC replies available to the Player
     accepted_duke_quest : bool
         defines whether the Player has accepted Dukes quest
-    drank_concoction : bool
+    drank_potion : bool
         defines whether the Player has drank the Concoction
     spoke_to_dog : bool
         defines whether the Player has spoken the Dog
@@ -51,6 +51,8 @@ class Player:
         the player help menu
     player_map : PlayerMap
         the player map menu
+    is_alive : bool
+        is the player alive
 
     Methods
     -------
@@ -76,8 +78,6 @@ class Player:
         adds action descriptions to the action_descriptions list
     enter_door(door)
         moves the player into a new room through the door
-    drink_concoction()
-        drinks the concoction
     '''
     def __init__(self, name, coordinates) -> None:
         '''
@@ -92,6 +92,7 @@ class Player:
         '''
         self.name = name
         self.graphic_char = ObjectTypes.PLAYER
+        self.backpack = BackPack()
         self.item_bag = []
         self.coordinates = coordinates
         self.current_room = None
@@ -100,13 +101,14 @@ class Player:
         self.action_descriptions = []
         self.npc_replies = []
         self.accepted_duke_quest = False
-        self.drank_concoction = False
+        self.drank_potion = False
         self.spoke_to_dog = False
         self.spoke_to_luke = False
         self.found_murderer = False
         self.inventory_menu = InventoryMenu(self)
         self.help_menu = HelpMenu()
         self.player_map = PlayerMap()
+        self.is_alive = True
     
     def player_action(self, player_input):
         '''
@@ -119,7 +121,7 @@ class Player:
         if player_input.isnumeric():
             object = self.action_options[int(player_input)].object
             if isinstance(object, Item):
-                self.pick_up_item(object)
+                self.backpack.add(object)
                 self.current_room.remove_object(object)
                 self.action_descriptions.append(f"You picked up a {object.name}!")
             elif isinstance(object, NPC):
@@ -130,7 +132,7 @@ class Player:
                 if npc_reply.action:
                     self.action_descriptions.append(npc_reply.action)
                 if npc_reply.item != None:
-                    self.pick_up_item(npc_reply.item)
+                    self.backpack.add(npc_reply.item)
                 if npc_reply.reply_options:
                     self.action_options = []
                     self.add_action_options(npc_reply.reply_options)
@@ -228,9 +230,3 @@ class Player:
             self.coordinates.column = door.linked_door.coordinates.column
             # Add player to linked room
             door.linked_room.add_object(self)
-            if not door.linked_room.name in self.player_map.visited_locations:
-                self.player_map.visited_locations.append(f"{door.linked_room.name}")
-    
-    def drink_concotion(self):
-        '''Drinks the concoction'''
-        self.drank_concoction = True

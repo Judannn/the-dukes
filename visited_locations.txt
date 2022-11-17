@@ -1,0 +1,7 @@
+Visited Locations;
+Dining Room
+Kitchen
+Hallway
+Bedroom
+Garden
+Shed

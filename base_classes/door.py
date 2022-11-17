@@ -21,7 +21,7 @@ class Door:
     -------
     enter_door()
         used to enter a door into the linked_room and exit at the linked_door
-    link_door()
+    link_door(door)
         links a door with another door
     '''
     def __init__(self, coordinates, linked_room) -> None:

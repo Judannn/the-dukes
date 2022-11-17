@@ -37,3 +37,11 @@ class PlayerMap:
         print(f"{' ' * 10} VISITED LOCATIONS {' ' * 10}")
         for room in self.visited_locations:
             print(room)
+    
+    def add_visited_location(self, room):
+        if not room.name in self.visited_locations:
+            self.visited_locations.append(f"{room.name}")
+            with open('visited_locations.txt', 'w') as text_file:
+                text_file.write("Visited Locations;\n")
+                for location in self.visited_locations:
+                    text_file.write(f"{location}\n")

@@ -49,7 +49,7 @@ class Dog(NPC):
         '''
         reply_details = NPCReply()
         if response == f"Talk to {self.name}":
-            if player.drank_concoction:
+            if player.drank_potion:
                 reply_details.reply = f"{self.name}: What's up boss?"
                 reply_details.reply_options.append(MenuOption("Any idea who killed Lulu?",self))
             else:
