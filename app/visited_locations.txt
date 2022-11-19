@@ -1,0 +1,11 @@
+Visited Locations;
+☐ : Kitchen
+☐ : Study
+☐ : Bedroom
+☐ : Bathroom
+☐ : Dining Room
+☐ : Hallway
+☐ : Bedroom 2
+☐ : Bedroom 3
+☐ : Garden
+☐ : Shed

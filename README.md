@@ -7,6 +7,10 @@
 This is a murder mystery game where you are dropped into The Dukes house. You are required to figure out who commited the murder by talking to characters and using items.
 
 ## **User Documentation**
+### Installation
+In order to start the game all files are required from the GitHub repo. <br/>
+You will then run 'main.py' in the python terminal to start up the game.
+
 ### Game play
 To play this game you will be required to type inputs and press the <kbd>enter</kbd> key. <br/>
 These inputs will be described to you through the game as either interaction options or pre-set inputs, these inputs are described below in the 'User Input Key's section.
