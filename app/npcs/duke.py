@@ -1,14 +1,14 @@
-from base_classes.npc import NPC
-from base_classes.npc_reply import NPCReply
-from base_classes.menu_option import MenuOption
-from base_classes.player import Player
-from items.water import Water
-from items.battery import Battery
-from items.berries import Berries
-from items.dog_hair import DogHair
-from items.silver_necklace import SilverNecklace
-from items.potion import Potion
-from items.concoction import Concoction
+from app.base_classes.npc import NPC
+from app.base_classes.npc_reply import NPCReply
+from app.base_classes.menu_option import MenuOption
+from app.base_classes.player import Player
+from app.items.water import Water
+from app.items.battery import Battery
+from app.items.berries import Berries
+from app.items.dog_hair import DogHair
+from app.items.silver_necklace import SilverNecklace
+from app.items.potion import Potion
+from app.items.concoction import Concoction
 
 
 class Duke(NPC):

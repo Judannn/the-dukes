@@ -1,4 +1,4 @@
-from base_classes.object_types import ObjectTypes
+from app.base_classes.object_types import ObjectTypes
 
 class Item:
     '''

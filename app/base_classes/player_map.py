@@ -1,6 +1,6 @@
 import os
-from base_classes.menu_option import MenuOption
-from items.potion import Potion
+from app.base_classes.menu_option import MenuOption
+from app.items.potion import Potion
 
 class PlayerMap:
     '''

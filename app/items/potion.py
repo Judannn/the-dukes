@@ -1,4 +1,4 @@
-from base_classes.item import Item
+from app.base_classes.item import Item
 
 class Potion(Item):
     '''

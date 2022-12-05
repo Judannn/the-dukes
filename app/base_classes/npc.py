@@ -1,7 +1,7 @@
-from base_classes.item import Item
-from base_classes.npc_reply import NPCReply
-from base_classes.object_types import ObjectTypes
-from base_classes.menu_option import MenuOption
+from app.base_classes.item import Item
+from app.base_classes.npc_reply import NPCReply
+from app.base_classes.object_types import ObjectTypes
+from app.base_classes.menu_option import MenuOption
 
 class NPC:
     '''

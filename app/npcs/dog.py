@@ -1,8 +1,8 @@
-from base_classes.npc import NPC
-from base_classes.npc_reply import NPCReply
-from base_classes.menu_option import MenuOption
-from base_classes.item import Item
-from items.dog_hair import DogHair
+from app.base_classes.npc import NPC
+from app.base_classes.npc_reply import NPCReply
+from app.base_classes.menu_option import MenuOption
+from app.base_classes.item import Item
+from app.items.dog_hair import DogHair
 
 class Dog(NPC):
     '''

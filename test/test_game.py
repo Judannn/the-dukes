@@ -1,31 +1,31 @@
 import unittest
 import sys
 sys.path.insert(0, './app')
-from base_classes.game import Game
+from app.base_classes.game import Game
 
-from base_classes.coordinates import Coordinates
-from base_classes.door import Door
-from base_classes.npc import NPC
-from base_classes.player import Player
-from base_classes.backpack import BackPack
-from base_classes.room import Room
-from base_classes.item import Item
-from base_classes.menu_option import MenuOption
-from base_classes.npc_reply import NPCReply
+from app.base_classes.coordinates import Coordinates
+from app.base_classes.door import Door
+from app.base_classes.npc import NPC
+from app.base_classes.player import Player
+from app.base_classes.backpack import BackPack
+from app.base_classes.room import Room
+from app.base_classes.item import Item
+from app.base_classes.menu_option import MenuOption
+from app.base_classes.npc_reply import NPCReply
 
-from items.berries import Berries
-from items.water import Water
-from items.battery import Battery
-from items.dog_hair import DogHair
-from items.potion import Potion
-from items.silver_necklace import SilverNecklace
+from app.items.berries import Berries
+from app.items.water import Water
+from app.items.battery import Battery
+from app.items.dog_hair import DogHair
+from app.items.potion import Potion
+from app.items.silver_necklace import SilverNecklace
 
-from npcs.daisy import Daisy
-from npcs.duke import Duke
-from npcs.grandma import Grandma
-from npcs.dog import Dog
-from npcs.luke import Luke
-from npcs.sherrif_rosco import SherrifRoscoe
+from app.npcs.daisy import Daisy
+from app.npcs.duke import Duke
+from app.npcs.grandma import Grandma
+from app.npcs.dog import Dog
+from app.npcs.luke import Luke
+from app.npcs.sherrif_rosco import SherrifRoscoe
 
 
 class TestApp(unittest.TestCase):

@@ -7,9 +7,15 @@
 This is a murder mystery game where you are dropped into The Dukes house. You are required to figure out who commited the murder by talking to characters and using items.
 
 ## **User Documentation**
-### Installation
-In order to start the game all files are required from the GitHub repo. <br/>
-You will then run 'main.py' in the python terminal to start up the game.
+### Installation Steps
+1. Download all files from this Github Repo. <br/>
+2. Install colorama to your Python libraries by entering ```pip install colorama``` in your python console.
+3. Once colorama is installed within the 'app' folder find 'main.py'
+4. You will then run 'main.py' in the python terminal to start up the game.
+
+## Note
+If there are any issues with imports whilst trying to run this game, there are import issues found, all imports will be required to be updated as per the IDE used. <br/>
+This game was created using Visual Studio Code so no issues will be found when running from this IDE.
 
 ### Game play
 To play this game you will be required to type inputs and press the <kbd>enter</kbd> key. <br/>

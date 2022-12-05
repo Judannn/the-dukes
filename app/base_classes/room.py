@@ -1,7 +1,6 @@
-from this import d
 from colorama import Fore
-from base_classes.player import Player
-from graphics import graphics
+from app.base_classes.player import Player
+from app.graphics import graphics
 
 class Room:
     '''

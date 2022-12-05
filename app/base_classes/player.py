@@ -1,13 +1,11 @@
-from nis import match
-from this import d
-from base_classes.door import Door
-from base_classes.help_menu import HelpMenu
-from base_classes.invertory_menu import InventoryMenu
-from base_classes.item import Item
-from base_classes.npc import NPC
-from base_classes.object_types import ObjectTypes
-from base_classes.player_map import PlayerMap
-from base_classes.backpack import BackPack
+from app.base_classes.door import Door
+from app.base_classes.help_menu import HelpMenu
+from app.base_classes.invertory_menu import InventoryMenu
+from app.base_classes.item import Item
+from app.base_classes.npc import NPC
+from app.base_classes.object_types import ObjectTypes
+from app.base_classes.player_map import PlayerMap
+from app.base_classes.backpack import BackPack
 
 class Player:
     '''
