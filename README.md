@@ -14,8 +14,8 @@ This is a murder mystery game where you are dropped into The Dukes house. You ar
 4. You will then run 'main.py' in the python terminal to start up the game.
 
 ## Note
-If there are any issues with imports whilst trying to run this game, there are import issues found, all imports will be required to be updated as per the IDE used. <br/>
-This game was created using Visual Studio Code so no issues will be found when running from this IDE.
+This game has been created in Visual Studio Code however issues with Jetbrains have become apparent. <br/>
+Edits have been made to allow function in JetBrains however functionality is not as smooth.
 
 ### Game play
 To play this game you will be required to type inputs and press the <kbd>enter</kbd> key. <br/>

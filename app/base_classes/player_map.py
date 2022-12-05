@@ -23,21 +23,21 @@ class PlayerMap:
         Updates which room the player has been in
     write_visited_locations()
         Writes which rooms the player has been in to a text file
-
-
     '''
     def __init__(self) -> None:
+        self.empty_box = u'\u2610'
+        self.cross_box = u'\u2612'
         self.visited_locations = []
-        self.visited_locations.append("☐ : Kitchen")
-        self.visited_locations.append("☐ : Study")
-        self.visited_locations.append("☐ : Bedroom")
-        self.visited_locations.append("☐ : Bathroom")
-        self.visited_locations.append("☐ : Dining Room")
-        self.visited_locations.append("☐ : Hallway")
-        self.visited_locations.append("☐ : Bedroom 2")
-        self.visited_locations.append("☐ : Bedroom 3")
-        self.visited_locations.append("☐ : Garden")
-        self.visited_locations.append("☐ : Shed")
+        self.visited_locations.append(f"{self.empty_box} : Kitchen")
+        self.visited_locations.append(f"{self.empty_box} : Study")
+        self.visited_locations.append(f"{self.empty_box} : Bedroom")
+        self.visited_locations.append(f"{self.empty_box} : Bathroom")
+        self.visited_locations.append(f"{self.empty_box} : Dining Room")
+        self.visited_locations.append(f"{self.empty_box} : Hallway")
+        self.visited_locations.append(f"{self.empty_box} : Bedroom 2")
+        self.visited_locations.append(f"{self.empty_box} : Bedroom 3")
+        self.visited_locations.append(f"{self.empty_box} : Garden")
+        self.visited_locations.append(f"{self.empty_box} : Shed")
         self.write_visited_locations()
 
     def open_map(self):
@@ -58,14 +58,14 @@ class PlayerMap:
     def add_visited_location(self, room):
         '''Updates which room the player has been in'''
         for location in self.visited_locations:
-            if location == f"☐ : {room.name}":
-                index = self.visited_locations.index(f"☐ : {room.name}")
-                self.visited_locations[index] = f"☒ : {room.name}"
+            if location == f"{self.empty_box} : {room.name}":
+                index = self.visited_locations.index(f"{self.empty_box} : {room.name}")
+                self.visited_locations[index] = f"{self.cross_box} : {room.name}"
                 self.write_visited_locations()
 
     def write_visited_locations(self):
         '''Writes which rooms the player has been in to a text file'''
-        with open('./app/visited_locations.txt', 'w') as text_file:
+        with open('./visited_locations.txt', 'w') as text_file:
             text_file.write("Visited Locations;\n")
             for location in self.visited_locations:
                 text_file.write(f"{location}\n")
