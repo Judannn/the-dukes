@@ -25,8 +25,8 @@ class PlayerMap:
         Writes which rooms the player has been in to a text file
     '''
     def __init__(self) -> None:
-        self.empty_box = u'\u2610'
-        self.cross_box = u'\u2612'
+        self.empty_box = '☐'
+        self.cross_box = '☒'
         self.visited_locations = []
         self.visited_locations.append(f"{self.empty_box} : Kitchen")
         self.visited_locations.append(f"{self.empty_box} : Study")
@@ -65,7 +65,7 @@ class PlayerMap:
 
     def write_visited_locations(self):
         '''Writes which rooms the player has been in to a text file'''
-        with open('./visited_locations.txt', 'w') as text_file:
+        with open('./visited_locations.txt', 'w', encoding='utf8') as text_file:
             text_file.write("Visited Locations;\n")
             for location in self.visited_locations:
                 text_file.write(f"{location}\n")
