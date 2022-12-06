@@ -14,7 +14,7 @@ This game has been created entirely with Python and runs directly in the Python 
 2. Install colorama to your Python libraries by entering ```pip install colorama``` in your python console.
 4. To start the game run 'main.py' located in the main folder.
 
-## Note
+### Note
 This game has been created in Visual Studio Code however issues with Jetbrains have become apparent. <br/>
 Edits have been made to allow function in JetBrains however functionality is not as smooth.
 
