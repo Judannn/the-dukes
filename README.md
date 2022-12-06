@@ -10,8 +10,7 @@ This is a murder mystery game where you are dropped into The Dukes house. You ar
 ### Installation Steps
 1. Download all files from this Github Repo. <br/>
 2. Install colorama to your Python libraries by entering ```pip install colorama``` in your python console.
-3. Once colorama is installed within the 'app' folder find 'main.py'
-4. You will then run 'main.py' in the python terminal to start up the game.
+4. To start the game run 'main.py' located in the main folder.
 
 ## Note
 This game has been created in Visual Studio Code however issues with Jetbrains have become apparent. <br/>
