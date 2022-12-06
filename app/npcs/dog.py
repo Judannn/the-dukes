@@ -53,7 +53,7 @@ class Dog(NPC):
                 reply_details.reply = f"{self.name}: What's up boss?"
                 reply_details.reply_options.append(MenuOption("Any idea who killed Lulu?",self))
             else:
-                reply_details.reply = "{self.name}: woof woof!"
+                reply_details.reply = f"{self.name}: woof woof!"
         elif response == "Any idea who killed Lulu?": 
             reply_details.reply = f"{self.name}: No idea dude, but I did see a Werewolf through the garden a few times..."
             player.spoke_to_dog = True
