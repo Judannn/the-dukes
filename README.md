@@ -6,6 +6,8 @@
 ## **Introduction**
 This is a murder mystery game where you are dropped into The Dukes house. You are required to figure out who commited the murder by talking to characters and using items.
 
+This game has been created entirely with Python and runs directly in the Python console.
+
 ## **User Documentation**
 ### Installation Steps
 1. Download all files from this Github Repo. <br/>
