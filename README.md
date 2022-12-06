@@ -20,7 +20,7 @@ Edits have been made to allow function in JetBrains however functionality is not
 
 ### Game play
 To play this game you will be required to type inputs and press the <kbd>enter</kbd> key. <br/>
-These inputs will be described to you through the game as either interaction options or pre-set inputs, these inputs are described below in the 'User Input Key's section.
+These inputs will be described to you through the game as either interaction options or pre-set inputs, these inputs are described below in the 'Game Play Input Key's' section.
 
 ### Map
 ![alt text for screen readers](the_dukes_map.png "Text to show on mouseover")
